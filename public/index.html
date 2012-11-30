@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+	<head>
+		<title>SDSLabs - Music Player</title>
+		<script src="http://cdn.sdslabs.co.in/cdnjs/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+		<link href="http://cdn.sdslabs.co.in/cdnjs/ajax/libs/twitter-bootstrap/2.2.1/css/bootstrap.min.css" type="text/stylesheet" rel="stylesheet"></link>
+		<link href="stylesheets/style.css" type="text/stylesheet" rel="stylesheet"></link>
+	</head>
+	<body>
+	<div id="container-fluid">
+		<div class="hero-unit">
+			<h1>SDSLabs -Lab Music Player</h1>
+		</div>
+		<div class="span8">
+			<input class="form-inline form-search" placeholder="search" type="search" id="searchbox">
+			<ol id="tracks"></ol>
+		</div>
+	</div>
+	<script>
+		$("#searchbox").bind('keydown',function(e){
+			if(e.keyCode===13){
+				var text=this.value;
+				$.get("http://sdslabs.local/muzi/ajax/search/",{search:text},function(data){
+					html='';
+					for(i in data.tracks){
+						html+='<li mid="'+data.tracks[i].id+'">'+data.tracks[i].title+'</li>'
+					}
+					$('#tracks').html(html);
+				});
+			}
+		});
+		$('#tracks').delegate('li','click',function(e){
+			//We clicked on a song!
+			var trackId=this.getAttribute('mid')
+			$.get("http://sdslabs.local/muzi/ajax/track/",{id:trackId},function(data){
+				$.post('/play',{url:data.file},function(){
+					alert("Sent a play request");
+				})
+			})
+		});
+	</script>
+	</body>
+</html>
