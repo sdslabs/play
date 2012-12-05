@@ -20,7 +20,7 @@
 		$("#searchbox").bind('keydown',function(e){
 			if(e.keyCode===13){
 				var text=this.value;
-				$.get("http://sdslabs.local/muzi/ajax/search/",{search:text},function(data){
+				$.get("https://sdslabs.co.in/muzi/ajax/search/",{search:text},function(data){
 					html='';
 					for(i in data.tracks){
 						html+='<li mid="'+data.tracks[i].id+'">'+data.tracks[i].title+'</li>'
@@ -32,9 +32,10 @@
 		$('#tracks').delegate('li','click',function(e){
 			//We clicked on a song!
 			var trackId=this.getAttribute('mid')
-			$.get("http://sdslabs.local/muzi/ajax/track/",{id:trackId},function(data){
-				$.post('/play',{url:data.file},function(){
-					alert("Sent a play request");
+			$.get("https://sdslabs.co.in/muzi/ajax/track/",{id:trackId},function(data){
+				var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
+				$.post('/play',{url:url},function(){
+					console.log("Sent a play request");
 				})
 			})
 		});

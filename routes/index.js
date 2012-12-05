@@ -1,7 +1,9 @@
 exports.index = function(req, res){
   res.sendfile("index.html");
 };
-var mpg123=require("../lib/mpg123.js");
+var vlc=require("../lib/vlc.js");
 exports.play = function(req,res){
-	mpg123.play("http://sdslabs.local/Music/"+req.body.url);
+	console.log("Playing https://music.sdslabs.co.in/"+req.body.url);
+	vlc.play("https://music.sdslabs.co.in/"+req.body.url)
+	res.send("Playing")
 };
