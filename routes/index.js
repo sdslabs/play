@@ -11,3 +11,8 @@ exports.play = function(req,res){
 exports.current = function(req,res){
 	res.send(vlc.getCurrent());
 }
+
+exports.youtube=function(req,res){
+	var link=req.body.link;
+	vlc.play(link,'youtube');
+}
