@@ -1,10 +1,21 @@
+$(document).ready(function(){
+    $('#searchbox').focus();
+});
 $("#searchbox").bind('keydown',function(e){
 	if(e.keyCode===13){
 		var text=this.value;
 		$.get("https://sdslabs.co.in/muzi/ajax/search/",{search:text},function(data){
 			html='';
 			for(i in data.tracks){
-				html+='<li mid="'+data.tracks[i].id+'">'+data.tracks[i].title+'</li>'
+				html+='<li mid="'+data.tracks[i].id
+					+'"><img style="float:left" class="thumbnail" width="50" height="50" src="https://cdn.sdslabs.co.in/music_pics/'
+					+data.tracks[i].albumId
+					+'.jpg">'
+					+data.tracks[i].title
+					+"<br>"
+					+data.tracks[i].artist
+					+"<br><div style='clear:both'>"
+					+'</li>'
 			}
 			$('#tracks').html(html);
 		});
