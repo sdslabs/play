@@ -1,3 +1,13 @@
 #tracks li{
+  cursor:pointer;
+}
+#albums li{
+  cursor:pointer;
+}
+#artists li{
 	cursor:pointer;
+}
+
+.hero-unit {
+  text-align: center;
 }
