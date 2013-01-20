@@ -23,7 +23,7 @@ app.get('/playing',function(req,res){
 	res.sendfile("public/nowplaying.html");
 });
 app.get('/current',routes.current);
-app.get('/pause',routes.pause);
+//app.get('/pause',routes.pause);
 app.post('/play',routes.play);
 app.post('/youtube',routes.youtube)
 app.listen(3000, function(){
