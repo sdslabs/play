@@ -101,7 +101,7 @@ $.getJSON('/config.json',function(config){
         +data.albums[i].name
         +'</div><div class="entry2">'
         +data.albums[i].band
-        +'</div></li>'
+        +'</div><div style="clear: both"></div></li>'
       }
       $('#albums ol').html(html);
     })
