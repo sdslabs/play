@@ -16,3 +16,7 @@ exports.youtube=function(req,res){
 	var link=req.body.link;
 	vlc.play(link,'youtube');
 }
+
+exports.pause=function(req,res){
+  res.send(vlc.pause());
+}
