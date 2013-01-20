@@ -1,13 +1,50 @@
 #tracks li{
   cursor:pointer;
+  list-style: none;
 }
+
+#tracks.single li{
+  list-style: decimal;
+}
+
 #albums li{
   cursor:pointer;
+  list-style: none;
 }
 #artists li{
-	cursor:pointer;
+  cursor:pointer;
+  list-style: none;
+}
+
+#artists .entry1 {
+  padding-top: 18px;
 }
 
 .hero-unit {
+  text-align: center;
+}
+
+.entry1 {
+  padding-top: 8px;
+  font-size: 1.2em;
+}
+
+.entry2 {
+  font-style: italic;
+}
+
+#tracks h2 {
+  margin-left: 27px;
+}
+
+#artists h2 {
+  padding-left: 23px;
+}
+
+#albums h2 {
+  padding-left: 23px;
+}
+
+.search {
   text-align: center;
 }

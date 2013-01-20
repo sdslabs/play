@@ -16,9 +16,9 @@ $.getJSON('/config.json',function(config){
           $('#artists').remove();
           $('#tracks').remove();
           $('#albums').remove();
-          $('.data').append('<div id="tracks" class="span4"><ol></ol></div>');
-          $('.data').append('<div id="artists" class="span4"><ol></ol></div>');
-          $('.data').append('<div id="albums" class="span4"><ol></ol></div>');
+          $('.data').append('<div id="tracks" class="span4"><h2>Tracks</h2><ol></ol></div>');
+          $('.data').append('<div id="artists" class="span4"><h2>Artists</h2><ol></ol></div>');
+          $('.data').append('<div id="albums" class="span4"><h2>Albums</h2><ol></ol></div>');
           
           html='';
           for(i in data.tracks){
@@ -26,12 +26,12 @@ $.getJSON('/config.json',function(config){
               +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
               +config.pics_root
               +data.tracks[i].albumId
-              +'.jpg">'
+              +'.jpg"><div class="entry1">'
               +data.tracks[i].title
-              +"<br>"
+              +'</div><div class="entry2">'
               +data.tracks[i].artist
-              +"<br><div style='clear:both'>"
-              +'</li>'
+              +'</div><div style="clear:both">'
+              +'</div></li>'
           }
           $('#tracks ol').html(html);
 
@@ -39,20 +39,30 @@ $.getJSON('/config.json',function(config){
           for(i in data.artists){
             html+='<li mt="artist" mid="'
             +data.artists[i].id+
-            '">'
+            '"><img style="float:left" class="thumbnail" width="50" height="50" src="'
+            +config.artist_pics_root
+            +data.artists[i].id
+            +'.jpg"><div class="entry1">'
             +data.artists[i].name
-            +'</li>'
+            +'</div><div style="clear:both"></div></li>'
           }
           $('#artists ol').html(html);
-          
+          https://sdslabs.co.in/muzi/artist_pics/17.jpg
+
           html='';
           for(i in data.albums){
             html+='<li mt="album" mid="'
             +data.albums[i].id
-            +'">'
+            +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
+            +config.pics_root
+            +data.albums[i].id
+            +'.jpg"><div class="entry1">'
             +data.albums[i].name
-            +"<br>"
+            +'</div><div class="entry2">'
             +data.albums[i].band
+            +'</div><div style="clear:both">'
+            +'</div></li>'
+
           }
           $('#albums ol').html(html);
         });
@@ -84,10 +94,14 @@ $.getJSON('/config.json',function(config){
       for(i in data.albums){
         html+='<li mt="album" mid="'
         +data.albums[i].id
-        +'">'
+        +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
+        +config.pics_root
+        +data.albums[i].id
+        +'.jpg"><div class="entry1">'
         +data.albums[i].name
-        +"<br>"
+        +'</div><div class="entry2">'
         +data.albums[i].band
+        +'</div></li>'
       }
       $('#albums ol').html(html);
     })
@@ -100,13 +114,23 @@ $.getJSON('/config.json',function(config){
     $.get(config.muzi_root+"ajax/album/index.php",{id:albumId},function(data){
       $('#albums').remove();
       $('#artists').remove();
-      $('#tracks').removeClass().addClass('span4 offset4');
-      html='';
+      $('#tracks h2').remove();
+      $('.data').append('<div id="tracks" class="span4"><h2>Tracks</h2><ol></ol></div>');
+      $('#tracks').removeClass().addClass('span4 offset4 single');
+      html='<div><img style="float:left" class="thumbnail" width="50" height="50" src="'
+        +config.pics_root
+        +data.id
+        +'.jpg"><h3>'
+        +data.band
+        +'</h3></div><div style="clear: both"><h4>'
+        +data.name
+        +'</h4></div>';
       for(i in data.tracks){
         html+='<li mt="track" mid="'
         +data.tracks[i].id
-        +'">'
+        +'"><div class="entry1">'
         +data.tracks[i].title
+        +'</div></li>'
       }
       $('#tracks ol').html(html);
     })
