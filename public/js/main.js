@@ -69,6 +69,10 @@ $.getJSON('/config.json',function(config){
       }
     }
   });
+
+  $('.stop').click(function(){
+    $.get("/kill");
+  });
   
   $('.data').delegate('#tracks ol li','click',function(e){
     console.log('We clicked on a song!');

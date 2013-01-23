@@ -24,8 +24,9 @@ app.get('/playing',function(req,res){
 });
 app.get('/current',routes.current);
 //app.get('/pause',routes.pause);
+app.get('/kill',routes.kill);
 app.post('/play',routes.play);
-app.post('/youtube',routes.youtube)
+app.post('/youtube',routes.youtube);
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
