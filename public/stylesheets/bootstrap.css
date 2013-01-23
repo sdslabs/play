@@ -1,4 +1,21 @@
-@import url('//fonts.googleapis.com/css?family=Lobster|Cabin:400,700');
+@font-face {
+  font-family: 'Cabin';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/cabin-regular.woff');
+}
+@font-face {
+  font-family: 'Cabin';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/cabin-bold.woff');
+}
+@font-face {
+  font-family: 'Lobster';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/lobster.woff');
+}
 /*!
  * Bootstrap v2.2.2
  *
