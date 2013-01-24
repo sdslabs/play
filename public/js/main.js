@@ -81,6 +81,7 @@ $.getJSON('/config.json',function(config){
       var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
       $.post('/play',{url:config.music_root+url,id:data.id},function(){
         console.log("Sent a play request");
+        $.get(config.muzi_root+'ajax/track/log.php',{id:data.id});
       })
     })
   });  
