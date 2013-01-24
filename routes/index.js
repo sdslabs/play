@@ -4,7 +4,7 @@ exports.index = function(req, res){
 var vlc=require("../lib/vlc.js");
 
 exports.play = function(req,res){
-  console.log("Playing https://music.sdslabs.co.in/"+req.body.url);
+  //console.log("Playing https://music.sdslabs.co.in/"+req.body.url);
   vlc.play(req.body.url,req.body.id,0);
   res.send("Playing");
 };
