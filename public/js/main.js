@@ -119,7 +119,7 @@ $.getJSON('/config.json',function(config){
     $.get(config.muzi_root+"ajax/album/index.php",{id:albumId},function(data){
       $('#albums').remove();
       $('#artists').remove();
-      $('#tracks h2').remove();
+      $('#tracks').remove();
       $('.data').append('<div id="tracks" class="span4"><h2>Tracks</h2><ol></ol></div>');
       $('#tracks').removeClass().addClass('span4 offset4 single');
       html='<div><img style="float:left" class="thumbnail" width="50" height="50" src="'
