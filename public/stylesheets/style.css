@@ -48,3 +48,11 @@
 .search {
   text-align: center;
 }
+
+h1 a {
+  color: white;
+}
+
+h1 a:hover {
+  text-decoration: none;
+}
