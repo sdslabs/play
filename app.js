@@ -19,12 +19,14 @@ app.configure(function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/playing',function(req,res){
-	res.sendfile("public/nowplaying.html");
-});
+//app.get('/playing',function(req,res){
+//	res.sendfile("public/nowplaying.html");
+//});
 app.get('/current',routes.current);
 //app.get('/pause',routes.pause);
 app.get('/kill',routes.kill);
+app.get('/queue',routes.queuelist);
+app.get('/list',routes.list);
 app.post('/play',routes.play);
 app.post('/youtube',routes.youtube);
 app.listen(3000, function(){

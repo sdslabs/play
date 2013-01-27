@@ -10,17 +10,27 @@ exports.play = function(req,res){
 };
 exports.current = function(req,res){
   res.send(vlc.getCurrent());
-}
+};
 
 exports.youtube=function(req,res){
   var link=req.body.link;
   vlc.play(link,'youtube');
-}
+};
 
 exports.kill=function(req,res){
   vlc.play('asd','asd',1);
   res.send("killed!");
+};
+
+exports.queuelist=function(req,res){
+  res.sendfile("public/queue.html");
+};
+
+exports.list=function(req,res){ 
+  var list = vlc.queuelist();
+  res.send(list);
 }
+
 //exports.pause=function(req,res){
 //  res.send(vlc.pause());
 //}
