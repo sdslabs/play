@@ -11,8 +11,6 @@ $.getJSON('/config.json',function(config){
       }
       else{
         $.get(config.muzi_root+"ajax/search/",{search:text},function(data){
-          console.log(data);
-          console.log(config);
           $('#artists').remove();
           $('#tracks').remove();
           $('#albums').remove();
@@ -33,6 +31,7 @@ $.getJSON('/config.json',function(config){
               +'</div><div style="clear:both">'
               +'</div></li>'
           }
+          console.log(html);
           $('#tracks ol').html(html);
 
           html='';
@@ -47,7 +46,6 @@ $.getJSON('/config.json',function(config){
             +'</div><div style="clear:both"></div></li>'
           }
           $('#artists ol').html(html);
-          https://sdslabs.co.in/muzi/artist_pics/17.jpg
 
           html='';
           for(i in data.albums){
