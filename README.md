@@ -14,3 +14,18 @@ Because we didn't have a mac to use github/play
 
 #Licence
 Licenced under MIT Licence. Feel free to contribute.
+
+
+#Screenshots
+
+![Home Page](http://i.imgur.com/F3Gryn5.jpg)
+
+Home Page
+
+![Search Page](http://i.imgur.com/PaxKOu3.jpg)
+
+Search Results
+
+![Now Playing](http://i.imgur.com/Ubuz3FQ.jpg)
+
+Now Playing screen
