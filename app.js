@@ -2,10 +2,11 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes');
-
-var app = module.exports = express.createServer();
+  var express = require("express");
+  var app = express();
+  var http = require('http');
+  var routes = require('./routes');
+  var path = require('path');
 
 // Configuration
 
@@ -13,7 +14,8 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+  app.use(express.static(path.join(__dirname,'./public')));
+  app.set('port', process.env.PORT || 3000);
 });
 
 // Routes
@@ -29,6 +31,6 @@ app.get('/queue',routes.queuelist);
 app.get('/list',routes.list);
 app.post('/play',routes.play);
 app.post('/youtube',routes.youtube);
-app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+http.createServer(app).listen(3000, function(){
+  console.log('Express server listening on port ' + app.get('port'));
 });

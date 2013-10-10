@@ -1,5 +1,5 @@
 exports.index = function(req, res){
-  res.sendfile("index.html");
+  res.sendfile("public/index.html");
 };
 var vlc=require("../lib/vlc.js");
 
