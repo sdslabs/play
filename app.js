@@ -29,6 +29,7 @@ app.get('/current',routes.current);
 app.get('/kill',routes.kill);
 app.get('/queue',routes.queuelist);
 app.get('/list',routes.list);
+app.get('/recent',routes.recent);
 app.post('/play',routes.play);
 app.post('/youtube',routes.youtube);
 http.createServer(app).listen(3000, function(){

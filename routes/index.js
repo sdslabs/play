@@ -31,6 +31,11 @@ exports.list=function(req,res){
   res.send(list);
 }
 
+exports.recent = function(req,res){
+  var recent = vlc.recentlist();
+  res.send(recent);
+}
+
 //exports.pause=function(req,res){
 //  res.send(vlc.pause());
 //}
