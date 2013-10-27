@@ -21,9 +21,6 @@ app.configure(function(){
 // Routes
 
 app.get('/', routes.index);
-//app.get('/playing',function(req,res){
-//	res.sendfile("public/nowplaying.html");
-//});
 app.get('/current',routes.current);
 //app.get('/pause',routes.pause);
 app.get('/kill',routes.kill);
