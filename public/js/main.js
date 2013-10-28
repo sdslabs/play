@@ -11,18 +11,18 @@ $.getJSON('/config.json',function(config){
       }
       else{
         $.get(config.muzi_root+"ajax/search/",{search:text},function(data){
-		// removing old data to show new 
-		$('#alert').remove();
-	       	$('#artists').remove();
-        	$('#tracks').remove();
-	        $('#albums').remove();
+                // removing old data to show new 
+                $('#alert').remove();
+                       $('#artists').remove();
+                $('#tracks').remove();
+                $('#albums').remove();
 
-		// showing no 'result' alert thing
-		if((data.tracks.length==0) && (data.albums.length==0) && (data.artists.length==0))
-		{
-			//console.log('nothing');
-			$('.data').append('<div id="alert" style="text-align:center;"><h2>No Result Found</h2></div>');
-		}
+                // showing no 'result' alert thing
+                if((data.tracks.length==0) && (data.albums.length==0) && (data.artists.length==0))
+                {
+                        //console.log('nothing');
+                        $('.data').append('<div id="alert" style="text-align:center;"><h2>No Result Found</h2></div>');
+                }
 
                 else {
           $('.data').append('<div id="tracks" class="span4"><h2>Tracks</h2><ol></ol></div>');
@@ -74,7 +74,7 @@ $.getJSON('/config.json',function(config){
 
           }
           $('#albums ol').html(html);
-	}
+        }
         });
       }
     }
@@ -152,4 +152,3 @@ $.getJSON('/config.json',function(config){
   });
 
 })
-
