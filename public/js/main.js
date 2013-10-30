@@ -3,6 +3,13 @@ $(document).ready(function(){
 });
 $.getJSON('/config.json',function(config){
   $("#searchbox").bind('keydown',function(e){
+    //
+    $('#top_1').remove();
+    $('#top_2').remove();
+    $('#top_3').remove();
+    $('#top_4').remove();
+    $('.hr').remove();
+    //
     if(e.keyCode===13){
       var text=this.value;
       if(text.substr(0,4)==="http"){
@@ -83,6 +90,52 @@ $.getJSON('/config.json',function(config){
   $('.stop').click(function(){
     $.get("/kill");
   });
+
+  //showing top songs from muzi leaderboard
+  $.get(config.muzi_root+"ajax/track/top.php", function(data){
+    // 4 columns for top songs
+    $('.data').append('<div id="top_1" class="span3"><ol></ol></div>');
+    $('.data').append('<div id="top_2" class="span3"><ol></ol></div>');
+    $('.data').append('<div id="top_3" class="span3"><ol></ol></div>');
+    $('.data').append('<div id="top_4" class="span3"><ol></ol></div>');
+
+    function html(x)
+    {
+      // substring of title, if it is lengthy
+      if(data[x].title.length > 28)
+      {
+        tempt = data[x].title.substring(0,26);
+        data[x].title = tempt + '...';
+      }
+      // substring of artist, if it is lengthy
+      if(data[x].artist.length > 30)
+      {
+        tempa = data[x].artist.substring(0,28);
+        data[x].artist = tempa + '...';
+      }
+      
+      content = '<li mid="'+data[x].id
+      +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
+      +config.pics_root
+      +data[x].albumId
+      +'.jpg"><div class="entry1">'
+      +data[x].title
+      +'</div><div class="entry2">'
+      +data[x].artist
+      +'</div><div style="clear:both">'
+      +'</div></li>'
+
+      return content;
+    }
+
+    // showing top 20 songs, 5 per column
+    $('#top_1').html(html(0) + html(1) + html(2) + html(3) + html(4));
+    $('#top_2').html(html(5) + html(6) + html(7) + html(8) + html(9));
+    $('#top_3').html(html(10) + html(11) + html(12) + html(13) + html(14));
+    $('#top_4').html(html(15) + html(16) + html(17) + html(18) + html(19));
+
+  })
+  //
   
   $('.data').delegate('#tracks ol li','click',function(e){
     console.log('We clicked on a song!');
@@ -98,7 +151,6 @@ $.getJSON('/config.json',function(config){
   
   $('.data').delegate('#artists ol li','click',function(e){
     //We clicked on an artist!
-    //console.log('We clicked on an artist!');
 
     var artistId=this.getAttribute('mid');
     $.get(config.muzi_root+"ajax/band/albums.php",{id:artistId},function(data){

@@ -12,6 +12,16 @@
   list-style:none;
 }
 
+#top_1 li, #top_2 li, #top_3 li, #top_4 li{
+  cursor:pointer;
+  list-style:none;
+}
+
+#top_1 .entry1, #top_2 .entry1, #top_3 .entry1, #top_4 .entry1 {
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
 #albums li{
   cursor:pointer;
   list-style: none;
@@ -30,12 +40,13 @@
 }
 
 .entry1 {
-  padding-top: 8px;
+  padding-top: 2px;
   font-size: 1.2em;
 }
 
 .entry2 {
   font-style: italic;
+  font-size: 0.8em;
 }
 
 #tracks h2 {
