@@ -7,6 +7,11 @@
   list-style: decimal;
 }
 
+#recent li{
+  cursor:pointer;
+  list-style:none;
+}
+
 #albums li{
   cursor:pointer;
   list-style: none;

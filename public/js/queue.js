@@ -180,7 +180,34 @@ if(window.location.pathname == "/queue"){
       // 
       load_recent(0,(data.length - 1));
     }  
+    //
+    $('.data').delegate('#recent ol li','click',function(e){
+      console.log('We clicked on a song from recent list');
+      var trackId=this.getAttribute('mid')
+      $.get(config.muzi_root+"ajax/track/",{id:trackId},function(data){
+        var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
+        $.post('/play',{url:config.music_root+url,id:data.id},function(){
+          console.log("Sent a play request");
+          $.get(config.muzi_root+'ajax/track/log.php',{id:data.id});
+        })
+      })
+    });
+    //
   })
+
+  /* add a song to 'queue' from 'recent' list
+  $('.data').delegate('#recent ol li','click',function(e){
+    console.log('We clicked on a song from recent list');
+    var trackId=this.getAttribute('mid')
+    $.get(config.muzi_root+"ajax/track/",{id:trackId},function(data){
+      var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
+      $.post('/play',{url:config.music_root+url,id:data.id},function(){
+        console.log("Sent a play request");
+        $.get(config.muzi_root+'ajax/track/log.php',{id:data.id});
+      })
+    })
+  }); 
+  */
 
 })
 
