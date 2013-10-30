@@ -4,10 +4,10 @@ $(document).ready(function(){
 $.getJSON('/config.json',function(config){
   $("#searchbox").bind('keydown',function(e){
     //
-    $('#top_1').remove();
-    $('#top_2').remove();
-    $('#top_3').remove();
-    $('#top_4').remove();
+    $('#_1').remove();
+    $('#_2').remove();
+    $('#_3').remove();
+    $('#_4').remove();
     $('.hr').remove();
     //
     if(e.keyCode===13){
@@ -27,7 +27,6 @@ $.getJSON('/config.json',function(config){
 		// showing no 'result' alert thing
 		if((data.tracks.length==0) && (data.albums.length==0) && (data.artists.length==0))
 		{
-			//console.log('nothing');
 			$('.data').append('<div id="alert" style="text-align:center;"><h2>No Result Found</h2></div>');
 		}
 
@@ -94,10 +93,10 @@ $.getJSON('/config.json',function(config){
   //showing top songs from muzi leaderboard
   $.get(config.muzi_root+"ajax/track/top.php", function(data){
     // 4 columns for top songs
-    $('.data').append('<div id="top_1" class="span3"><ol></ol></div>');
-    $('.data').append('<div id="top_2" class="span3"><ol></ol></div>');
-    $('.data').append('<div id="top_3" class="span3"><ol></ol></div>');
-    $('.data').append('<div id="top_4" class="span3"><ol></ol></div>');
+    $('.data').append('<div id="_1" class="span3 top"><ol></ol></div>');
+    $('.data').append('<div id="_2" class="span3 top"><ol></ol></div>');
+    $('.data').append('<div id="_3" class="span3 top"><ol></ol></div>');
+    $('.data').append('<div id="_4" class="span3 top"><ol></ol></div>');
 
     function html(x)
     {
@@ -129,14 +128,28 @@ $.getJSON('/config.json',function(config){
     }
 
     // showing top 20 songs, 5 per column
-    $('#top_1').html(html(0) + html(1) + html(2) + html(3) + html(4));
-    $('#top_2').html(html(5) + html(6) + html(7) + html(8) + html(9));
-    $('#top_3').html(html(10) + html(11) + html(12) + html(13) + html(14));
-    $('#top_4').html(html(15) + html(16) + html(17) + html(18) + html(19));
+    $('#_1').html(html(0) + html(1) + html(2) + html(3) + html(4));
+    $('#_2').html(html(5) + html(6) + html(7) + html(8) + html(9));
+    $('#_3').html(html(10) + html(11) + html(12) + html(13) + html(14));
+    $('#_4').html(html(15) + html(16) + html(17) + html(18) + html(19));
 
   })
   //
   
+  // adding a top song to queue, when clicked on homepage 
+  $('.data').delegate('.top li','click',function(e){
+    console.log('We clicked on a song from top list');
+    var trackId=this.getAttribute('mid')
+    $.get(config.muzi_root+"ajax/track/",{id:trackId},function(data){
+      var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
+      $.post('/play',{url:config.music_root+url,id:data.id},function(){
+        console.log("Sent a play request");
+        $.get(config.muzi_root+'ajax/track/log.php',{id:data.id});
+      })
+    })
+  });
+  //
+
   $('.data').delegate('#tracks ol li','click',function(e){
     console.log('We clicked on a song!');
     var trackId=this.getAttribute('mid')

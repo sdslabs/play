@@ -12,12 +12,12 @@
   list-style:none;
 }
 
-#top_1 li, #top_2 li, #top_3 li, #top_4 li{
+#_1 li, #_2 li, #_3 li, #_4 li{
   cursor:pointer;
   list-style:none;
 }
 
-#top_1 .entry1, #top_2 .entry1, #top_3 .entry1, #top_4 .entry1 {
+#_1 .entry1, #_2 .entry1, #_3 .entry1, #_4 .entry1 {
   font-size: 0.8em;
   font-weight: bold;
 }
