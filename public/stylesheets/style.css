@@ -7,6 +7,21 @@
   list-style: decimal;
 }
 
+#recent li{
+  cursor:pointer;
+  list-style:none;
+}
+
+#_1 li, #_2 li, #_3 li, #_4 li{
+  cursor:pointer;
+  list-style:none;
+}
+
+#_1 .entry1, #_2 .entry1, #_3 .entry1, #_4 .entry1 {
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
 #albums li{
   cursor:pointer;
   list-style: none;
@@ -25,12 +40,13 @@
 }
 
 .entry1 {
-  padding-top: 8px;
+  padding-top: 1px;
   font-size: 1.2em;
 }
 
 .entry2 {
   font-style: italic;
+  font-size: 0.8em;
 }
 
 #tracks h2 {
