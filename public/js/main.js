@@ -26,63 +26,64 @@ $.getJSON('/config.json',function(config){
 	       	$('#artists').remove();
         	$('#tracks').remove();
 	        $('#albums').remove();
+            var dataHandle = $('.data');
+        		// showing no 'result' alert thing
+        		if((data.tracks.length==0) && (data.albums.length==0) && (data.artists.length==0))
+        		{
+        			dataHandle.append('<div id="alert" style="text-align:center;"><h2>No Result Found</h2></div>');
+        		}
 
-		// showing no 'result' alert thing
-		if((data.tracks.length==0) && (data.albums.length==0) && (data.artists.length==0))
-		{
-			$('.data').append('<div id="alert" style="text-align:center;"><h2>No Result Found</h2></div>');
-		}
+            else {
 
-                else {
-          $('.data').append('<div id="tracks" class="span4"><h2>Tracks</h2><ol></ol></div>');
-          $('.data').append('<div id="artists" class="span4"><h2>Artists</h2><ol></ol></div>');
-          $('.data').append('<div id="albums" class="span4"><h2>Albums</h2><ol></ol></div>');
+            dataHandle.append('<div id="tracks" class="span4"><h2>Tracks</h2><ol></ol></div>');
+            dataHandle.append('<div id="artists" class="span4"><h2>Artists</h2><ol></ol></div>');
+            dataHandle.append('<div id="albums" class="span4"><h2>Albums</h2><ol></ol></div>');
 
-          html='';
-          for(i in data.tracks){
-            html+='<li mid="'+data.tracks[i].id
+            html='';
+            for(i in data.tracks){
+              html+='<li mid="'+data.tracks[i].id
+                +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
+                +config.pics_root
+                +data.tracks[i].albumId
+                +'.jpg"><div class="entry1">'
+                +data.tracks[i].title
+                +'</div><div class="entry2">'
+                +data.tracks[i].artist
+                +'</div><div style="clear:both">'
+                +'</div></li>'
+            }
+            //console.log(html);
+            $('#tracks ol').html(html);
+
+            html='';
+            for(i in data.artists){
+              html+='<li mt="artist" mid="'
+              +data.artists[i].id+
+              '"><img style="float:left" class="thumbnail" width="50" height="50" src="'
+              +config.artist_pics_root
+              +data.artists[i].id
+              +'.jpg"><div class="entry1">'
+              +data.artists[i].name
+              +'</div><div style="clear:both"></div></li>'
+            }
+            $('#artists ol').html(html);
+
+            html='';
+            for(i in data.albums){
+              html+='<li mt="album" mid="'
+              +data.albums[i].id
               +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
               +config.pics_root
-              +data.tracks[i].albumId
+              +data.albums[i].id
               +'.jpg"><div class="entry1">'
-              +data.tracks[i].title
+              +data.albums[i].name
               +'</div><div class="entry2">'
-              +data.tracks[i].artist
+              +data.albums[i].band
               +'</div><div style="clear:both">'
               +'</div></li>'
-          }
-          //console.log(html);
-          $('#tracks ol').html(html);
 
-          html='';
-          for(i in data.artists){
-            html+='<li mt="artist" mid="'
-            +data.artists[i].id+
-            '"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-            +config.artist_pics_root
-            +data.artists[i].id
-            +'.jpg"><div class="entry1">'
-            +data.artists[i].name
-            +'</div><div style="clear:both"></div></li>'
-          }
-          $('#artists ol').html(html);
-
-          html='';
-          for(i in data.albums){
-            html+='<li mt="album" mid="'
-            +data.albums[i].id
-            +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-            +config.pics_root
-            +data.albums[i].id
-            +'.jpg"><div class="entry1">'
-            +data.albums[i].name
-            +'</div><div class="entry2">'
-            +data.albums[i].band
-            +'</div><div style="clear:both">'
-            +'</div></li>'
-
-          }
-          $('#albums ol').html(html);
+            }
+            $('#albums ol').html(html);
 	}
         });
       }
@@ -95,11 +96,13 @@ $.getJSON('/config.json',function(config){
 
   //showing top songs from muzi leaderboard
   $.get(config.muzi_root+"ajax/track/top.php", function(data){
+
+    var dataHandle = $('.data');
     // 4 columns for top songs
-    $('.data').append('<div id="_1" class="span3 top"><ol></ol></div>');
-    $('.data').append('<div id="_2" class="span3 top"><ol></ol></div>');
-    $('.data').append('<div id="_3" class="span3 top"><ol></ol></div>');
-    $('.data').append('<div id="_4" class="span3 top"><ol></ol></div>');
+    dataHandle.append('<div id="_1" class="span3 top"><ol></ol></div>');
+    dataHandle.append('<div id="_2" class="span3 top"><ol></ol></div>');
+    dataHandle.append('<div id="_3" class="span3 top"><ol></ol></div>');
+    dataHandle.append('<div id="_4" class="span3 top"><ol></ol></div>');
 
     function html(x)
     {
