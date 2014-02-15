@@ -9,17 +9,20 @@ $.getJSON('/config.json',function(config){
     $('#_3').remove();
     $('#_4').remove();
     $('.hr').remove();
-    //
+
+    //Bind the enter key to the handler
     if(e.keyCode===13){
       var text=this.value;
       if(text.substr(0,4)==="http"){
         //We have a youtube link for us
         $.post('/youtube',{link:text});
+        //Empty the search box if its youtube link
+        this.value = '';
       }
       else{
         $.get(config.muzi_root+"ajax/search/",{search:text},function(data){
-		// removing old data to show new 
-		$('#alert').remove();
+		      // removing old data to show new
+		      $('#alert').remove();
 	       	$('#artists').remove();
         	$('#tracks').remove();
 	        $('#albums').remove();
@@ -34,7 +37,7 @@ $.getJSON('/config.json',function(config){
           $('.data').append('<div id="tracks" class="span4"><h2>Tracks</h2><ol></ol></div>');
           $('.data').append('<div id="artists" class="span4"><h2>Artists</h2><ol></ol></div>');
           $('.data').append('<div id="albums" class="span4"><h2>Albums</h2><ol></ol></div>');
-          
+
           html='';
           for(i in data.tracks){
             html+='<li mid="'+data.tracks[i].id
@@ -112,7 +115,7 @@ $.getJSON('/config.json',function(config){
         tempa = data[x].artist.substring(0,28);
         data[x].artist = tempa + '...';
       }
-      
+
       content = '<li mid="'+data[x].id
       +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
       +config.pics_root
@@ -135,8 +138,8 @@ $.getJSON('/config.json',function(config){
 
   })
   //
-  
-  // adding a top song to queue, when clicked on homepage 
+
+  // adding a top song to queue, when clicked on homepage
   $('.data').delegate('.top li','click',function(e){
     console.log('We clicked on a song from top list');
     var trackId=this.getAttribute('mid');
@@ -212,8 +215,8 @@ $.getJSON('/config.json',function(config){
         $.get(config.muzi_root+'ajax/track/log.php',{id:data.id});
       })
     })
-  });  
-  
+  });
+
   $('.data').delegate('#artists ol li','click',function(e){
     //We clicked on an artist!
 
@@ -238,7 +241,7 @@ $.getJSON('/config.json',function(config){
       $('#albums ol').html(html);
     })
   });
-  
+
   $('.data').delegate('#albums ol li','click',function(e){
     //console.log('We clicked on an album!');
 
