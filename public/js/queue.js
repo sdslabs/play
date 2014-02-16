@@ -80,7 +80,7 @@ if(window.location.pathname == "/queue"){
 
     // now playing data
     $.get("/current",function(data){
-      $('.data').append('<div id="nowplaying" class="span4"><h2>Now Playing</h2><div class="lyrics"></div></div>');
+      $('.data').append('<div id="nowplaying" class="span4"><h2>Now Playing</h2><div class="combo"></div></div>');
       htmlnew='';
       if(data.length > 0){
 
@@ -89,6 +89,10 @@ if(window.location.pathname == "/queue"){
         if(data[0].match(patt))
         {
           $.get(config.muzi_root+'ajax/track/',{id:data[0]},function(track){
+
+            if(track.lyrics == 'NOT_FOUND') {
+              track.lyrics = 'Can\'t find the lyrics';
+            }
           htmlnew+='<div mid="'+track.id
             +'"><img src="'
             +config.pics_root
@@ -98,11 +102,17 @@ if(window.location.pathname == "/queue"){
             +'</div><div class="entry2">'
             +track.artist
             +'</div><div style="clear:both">'
+            +'<button type="button" class="btn" id="lyricsButton">Lyrics</button>'
             +'</div></div><div class="lyrics">'
             +track.lyrics
             +'</div>';
-          $('#nowplaying .lyrics').html(htmlnew);
-          })
+          $('#nowplaying .combo').html(htmlnew);
+          $('.lyrics').hide();
+          $('#lyricsButton').click( function(){
+              $('.lyrics').show();
+              $(this).detach();
+            });
+          });
         }
         // youtube ID's have alphanumric and some special characters also
         else
@@ -117,7 +127,7 @@ if(window.location.pathname == "/queue"){
             +json.data.uploader
             +'</div><div style="clear:both">'
             +'</div></div>';
-          $('#nowplaying .lyrics').html(htmlnew);
+          $('#nowplaying .combo').html(htmlnew);
           })
         }
 
