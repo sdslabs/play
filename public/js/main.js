@@ -60,7 +60,7 @@ $.getJSON('/config.json',function(config){
               html+='<li mt="artist" mid="'
               +data.artists[i].id+
               '"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-              +config.artist_pics_root
+              +config.pics_root
               +data.artists[i].id
               +'.jpg"><div class="entry1">'
               +data.artists[i].name
