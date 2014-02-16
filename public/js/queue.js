@@ -2,14 +2,14 @@ $('.stop').click(function(){
     $.get("/kill");
 });
 
-if(window.location.pathname == "/queue"){ 
+if(window.location.pathname == "/queue"){
   $.getJSON('/config.json',function(config){
     $.get("/list",function(data){
-      if(data){
+      if(data.length > 0){
       $('#tracks').remove();
       $('.data').append('<div id="tracks" class="span4"><h2>Queue</h2><ol></ol></div>');
       html='';
-      
+
       function load_queue(x,y)
       {
           // youtube link (of any kind : multiple query parameters also)
@@ -22,7 +22,7 @@ if(window.location.pathname == "/queue"){
               a = url.indexOf('?v=');
               for(var i=a+3;i<a+14;i++)
               {id = id + url[i];}
-            } 
+            }
             else if(url.indexOf('&v=') != -1)
             {
               id = '';
@@ -43,7 +43,7 @@ if(window.location.pathname == "/queue"){
                 +'</div><div style="clear:both">'
                 +'</div></li>';
               $('#tracks ol').html(html);
-          
+
               if(x+1<=y)
               {
                 load_queue(x+1,y);
@@ -51,9 +51,9 @@ if(window.location.pathname == "/queue"){
             })
           }
           // muzi link
-          else{ 
+          else{
           $.get(config.muzi_root + 'ajax/track/', {id:data[x][1]}, function(track){
-          
+
               html+='<li mid="'+track.id
                 +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
                 +config.pics_root
@@ -65,11 +65,11 @@ if(window.location.pathname == "/queue"){
                 +'</div><div style="clear:both">'
                 +'</div></li>';
               $('#tracks ol').html(html);
-              
+
               if(x+1<=y)
               {
                 load_queue(x+1,y);
-              } 
+              }
             })
           }
       }
@@ -82,10 +82,10 @@ if(window.location.pathname == "/queue"){
     $.get("/current",function(data){
       $('.data').append('<div id="nowplaying" class="span4"><h2>Now Playing</h2><div class="lyrics"></div></div>');
       htmlnew='';
-      if(data){
+      if(data.length > 0){
 
         // matching number, muzi songs ID's are all numeric
-        patt = /^\d+$/g;   
+        patt = /^\d+$/g;
         if(data[0].match(patt))
         {
           $.get(config.muzi_root+'ajax/track/',{id:data[0]},function(track){
@@ -127,7 +127,7 @@ if(window.location.pathname == "/queue"){
 
   // recent songs
   $.get("/recent", function(data){
-      if(data){
+      if(data.length > 0){
         $('#recent').remove();
         $('.data').append('<div id="recent" class="span4"><h2>Recent</h2><ol></ol></div>');
 
@@ -136,7 +136,7 @@ if(window.location.pathname == "/queue"){
       {
 
         // matching number, muzi songs ID's are all numeric
-        patt = /^\d+$/g;   
+        patt = /^\d+$/g;
         if(data[x].match(patt))
         {
           $.get(config.muzi_root+'ajax/track/',{id:data[x]},function(track){
@@ -152,7 +152,7 @@ if(window.location.pathname == "/queue"){
             +'</div></li>';
 
             $('#recent ol').html(html_recent);
-      
+
             if(x+1<=y)
             {
               load_recent(x+1,y);
@@ -173,7 +173,7 @@ if(window.location.pathname == "/queue"){
             +'</div><div style="clear:both">'
             +'</div></li>';
             $('#recent ol').html(html_recent);
-            
+
             if(x+1<=y)
             {
               load_recent(x+1,y);
@@ -181,9 +181,9 @@ if(window.location.pathname == "/queue"){
           })
         }
       }
-      // 
+      //
       load_recent(0,(data.length - 1));
-    }  
+    }
     //
     $('.data').delegate('#recent ol li','click',function(e){
       console.log('We clicked on a song from recent list');
@@ -224,7 +224,7 @@ if(window.location.pathname == "/queue"){
     });
     //
   })
-  
+
 })
 
 }
