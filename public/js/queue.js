@@ -1,3 +1,7 @@
+$('.stop').click(function(){
+    $.get("/kill");
+});
+
 if(window.location.pathname == "/queue"){ 
   $.getJSON('/config.json',function(config){
     $.get("/list",function(data){
