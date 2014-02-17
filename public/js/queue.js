@@ -1,9 +1,26 @@
-$('.stop').click(function(){
+if(window.location.pathname !== "/queue") {
+  //for home
+  $('.stop').click(function(){
     $.get("/kill");
-});
+  });
+}
 
-if(window.location.pathname == "/queue"){
+else if(window.location.pathname == "/queue"){
+
+
   $.getJSON('/config.json',function(config){
+
+    $('.stop').click(function(){
+    $.get("/kill");
+    $('#nowplaying').html('');
+    //rerender page
+    $.get("/current",function(data){
+      console.log(data);
+      renderPage(data);
+      });
+
+    });
+
     $.get("/list",function(data){
       if(data.length > 0){
       $('#tracks').remove();
@@ -80,6 +97,12 @@ if(window.location.pathname == "/queue"){
 
     // now playing data
     $.get("/current",function(data){
+      renderPage(data);
+    });
+
+
+    //Logic for page rendering
+    var renderPage = function(data){
       $('.data').append('<div id="nowplaying" class="span4"><h2>Now Playing</h2><div class="combo"></div></div>');
       htmlnew='';
       if(data.length > 0){
@@ -156,7 +179,7 @@ if(window.location.pathname == "/queue"){
         });
 
       }
-    })
+    };
 
   // recent songs
   $.get("/recent", function(data){
