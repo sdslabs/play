@@ -135,15 +135,13 @@ if(window.location.pathname == "/queue"){
         }
 
         $('.data').delegate('#repeatButton','click',function(){
-          console.log("clicked");
           $.post('/repeat',{} ,function(result){
+            //console.log(result);
             if(result)
             {
-              console.log('true');
-            }
-            else
-            {
-              console.log('false');
+                var datavalue = "The song will be repeated";
+                $(".entry1").attr("data-hint",""+datavalue+"");
+                $(".entry1").addClass("hint--left hint--bounce");
             }
           });
         });

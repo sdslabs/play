@@ -22,7 +22,7 @@ exports.kill=function(req,res){
 };
 
 exports.repeat = function(req,res){
-  vlc.repeatCurrent();
+  res.send(vlc.repeatCurrent());
 };
 
 exports.queuelist=function(req,res){
