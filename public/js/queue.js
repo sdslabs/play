@@ -90,7 +90,7 @@ if(window.location.pathname == "/queue"){
         {
           $.get(config.muzi_root+'ajax/track/',{id:data[0]},function(track){
 
-            if(track.lyrics == 'NOT_FOUND') {
+            if(track.lyrics == 'NOT_FOUND' || track.lyrics == null ) {
               track.lyrics = 'Can\'t find the lyrics';
             }
           htmlnew+='<div mid="'+track.id
