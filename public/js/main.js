@@ -144,7 +144,7 @@ $.getJSON('/config.json',function(config){
 
   // adding a top song to queue, when clicked on homepage
   $('.data').delegate('.top li','click',function(e){
-    console.log('We clicked on a song from top list');
+    //console.log('We clicked on a song from top list');
     var trackId=this.getAttribute('mid');
     // notification on adding a song
     // checking that, is there a song playing right now or not
@@ -154,14 +154,14 @@ $.getJSON('/config.json',function(config){
 	if(result)
 	{
 		datavalue = "added song to queue";
-		console.log(datavalue);
+		//console.log(datavalue);
 		This.attr("data-hint",""+datavalue+"");
 		This.addClass("hint--top hint--bounce");
 	}
 	else
 	{
 		datavalue = "playing it right now";
-                console.log(datavalue);
+                //console.log(datavalue);
                 This.attr("data-hint",""+datavalue+"");
 		This.addClass("hint--top hint--bounce");
 	}
@@ -175,7 +175,7 @@ $.getJSON('/config.json',function(config){
     $.get(config.muzi_root+"ajax/track/",{id:trackId},function(data){
       var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
       $.post('/play',{url:config.music_root+url,id:data.id},function(){
-        console.log("Sent a play request");
+        //console.log("Sent a play request");
         $.get(config.muzi_root+'ajax/track/log.php',{id:data.id});
       })
     })
@@ -183,7 +183,7 @@ $.getJSON('/config.json',function(config){
   //
 
   $('.data').delegate('#tracks ol li','click',function(e){
-    console.log('We clicked on a song!');
+    //console.log('We clicked on a song!');
     var trackId=this.getAttribute('mid')
     // notification on adding a song
     // checking that, is there a song playing right now or not
@@ -193,14 +193,14 @@ $.getJSON('/config.json',function(config){
         if(result)
         {
                 datavalue = "added song to queue";
-                console.log(datavalue);
+                //console.log(datavalue);
                 This.attr("data-hint",""+datavalue+"");
                 This.addClass("hint--top hint--bounce");
         }
         else
         {
                 datavalue = "playing it right now";
-                console.log(datavalue);
+                //console.log(datavalue);
                 This.attr("data-hint",""+datavalue+"");
                 This.addClass("hint--top hint--bounce");
         }
@@ -214,7 +214,7 @@ $.getJSON('/config.json',function(config){
     $.get(config.muzi_root+"ajax/track/",{id:trackId},function(data){
       var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
       $.post('/play',{url:config.music_root+url,id:data.id},function(){
-        console.log("Sent a play request");
+        //console.log("Sent a play request");
         $.get(config.muzi_root+'ajax/track/log.php',{id:data.id});
       })
     })

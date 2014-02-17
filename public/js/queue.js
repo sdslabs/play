@@ -134,7 +134,6 @@ if(window.location.pathname == "/queue"){
       }
     })
 
-
   // recent songs
   $.get("/recent", function(data){
       if(data.length > 0){
@@ -196,7 +195,7 @@ if(window.location.pathname == "/queue"){
     }
     //
     $('.data').delegate('#recent ol li','click',function(e){
-      console.log('We clicked on a song from recent list');
+      //console.log('We clicked on a song from recent list');
       var trackId=this.getAttribute('mid');
       // notification on adding a song
       // checking that, is there a song playing right now or not
@@ -206,14 +205,14 @@ if(window.location.pathname == "/queue"){
         if(result)
         {
                 datavalue = "added song to queue";
-                console.log(datavalue);
+                //console.log(datavalue);
                 This.attr("data-hint",""+datavalue+"");
                 This.addClass("hint--top hint--bounce");
         }
         else
         {
                 datavalue = "playing it right now";
-                console.log(datavalue);
+                //console.log(datavalue);
                 This.attr("data-hint",""+datavalue+"");
                 This.addClass("hint--top hint--bounce");
         }
@@ -227,7 +226,7 @@ if(window.location.pathname == "/queue"){
       $.get(config.muzi_root+"ajax/track/",{id:trackId},function(data){
         var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
         $.post('/play',{url:config.music_root+url,id:data.id},function(){
-          console.log("Sent a play request");
+          //console.log("Sent a play request");
           $.get(config.muzi_root+'ajax/track/log.php',{id:data.id});
         })
       })
