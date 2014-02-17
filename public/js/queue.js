@@ -91,7 +91,7 @@ if(window.location.pathname == "/queue"){
           $.get(config.muzi_root+'ajax/track/',{id:data[0]},function(track){
 
             if(track.lyrics == 'NOT_FOUND' || track.lyrics == null ) {
-              track.lyrics = 'Can\'t find the lyrics';
+              track.lyrics = null;
             }
           htmlnew+='<div mid="'+track.id
             +'"><img src="'
@@ -104,16 +104,25 @@ if(window.location.pathname == "/queue"){
             +'</div><div class="entry2">'
             +track.artist
             +'</div><div style="clear:both">'
-            +'<button type="button" class="btn" id="lyricsButton">Lyrics</button>'
-            +'</div></div><div class="lyrics">'
-            +track.lyrics
-            +'</div>';
-          $('#nowplaying .combo').html(htmlnew);
-          $('.lyrics').hide();
-          $('#lyricsButton').click( function(){
+            if( track.lyrics)
+            {
+              htmlnew  += '<button type="button" class="btn" id="lyricsButton">Lyrics</button>'
+              +'</div></div><div class="lyrics">'
+              +track.lyrics
+              +'</div>';
+              $('#nowplaying .combo').html(htmlnew);
+
+              $('.lyrics').hide();
+              $('#lyricsButton').click( function(){
               $('.lyrics').show();
               $(this).detach();
             });
+            }
+            else
+            {
+              $('#nowplaying .combo').html(htmlnew);
+            }
+
           });
         }
         // youtube ID's have alphanumric and some special characters also
