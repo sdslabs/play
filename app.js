@@ -29,6 +29,7 @@ app.get('/list',routes.list);
 app.get('/recent',routes.recent);
 app.get('/now',routes.now);
 app.post('/play',routes.play);
+app.post('/repeat', routes.repeat);
 app.post('/youtube',routes.youtube);
 http.createServer(app).listen(3000, function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -21,11 +21,15 @@ exports.kill=function(req,res){
   res.send("killed!");
 };
 
+exports.repeat = function(req,res){
+  vlc.repeatCurrent();
+};
+
 exports.queuelist=function(req,res){
   res.sendfile("public/queue.html");
 };
 
-exports.list=function(req,res){ 
+exports.list=function(req,res){
   var list = vlc.queuelist();
   res.send(list);
 }

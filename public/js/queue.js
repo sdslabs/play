@@ -97,8 +97,10 @@ if(window.location.pathname == "/queue"){
             +'"><img src="'
             +config.pics_root
             +track.albumId
-            +'.jpg"><div class="entry1">'
+            +'.jpg">'
+            +'<div class="entry1">'
             +track.title
+            +'<img src="../repeat.png" id="repeatButton" alt="Repeat" title="Repeat this song"/>'
             +'</div><div class="entry2">'
             +track.artist
             +'</div><div style="clear:both">'
@@ -123,6 +125,7 @@ if(window.location.pathname == "/queue"){
             +config.pics_root
             +'.jpg"><div class="entry1">'
             +json.data.title
+            +'<img src="../repeat.png" id="repeatButton" alt="Repeat" title="Repeat this song"/>'
             +'</div><div class="entry2">'
             +json.data.uploader
             +'</div><div style="clear:both">'
@@ -130,6 +133,20 @@ if(window.location.pathname == "/queue"){
           $('#nowplaying .combo').html(htmlnew);
           })
         }
+
+        $('.data').delegate('#repeatButton','click',function(){
+          console.log("clicked");
+          $.post('/repeat',{} ,function(result){
+            if(result)
+            {
+              console.log('true');
+            }
+            else
+            {
+              console.log('false');
+            }
+          });
+        });
 
       }
     })
