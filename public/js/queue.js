@@ -11,18 +11,18 @@ else if(window.location.pathname == "/queue"){
 
   $.getJSON('/config.json',function(config){
 
-    $('.stop').click(function(){
-      $.get("/kill");
-      $('#nowplaying').remove();
-      //rerender page
-      $.post("/next",{},function(data){
-        renderPage(data);
-        });
-      getQueue();
-      getRecent();
-    });
-
-
+    var killHandler = function(){
+        $('.stop').click(function(){
+        $.get("/kill");
+        $('#nowplaying').remove();
+        //rerender page
+        $.post("/next",{},function(data){
+          renderPage(data);
+          });
+        getQueue();
+        getRecent();
+      });
+    };
 
     //Get Queue Logic
     var getQueue = function(){
@@ -297,6 +297,7 @@ else if(window.location.pathname == "/queue"){
         })
       });
     }
+    killHandler();
     getNowPlaying();
     getQueue();
     getRecent();
