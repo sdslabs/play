@@ -17,7 +17,6 @@ else if(window.location.pathname == "/queue"){
       //rerender page
       $.post("/next",{},function(data){
         renderPage(data);
-        getRecent();
         });
       getQueue();
       getRecent();
@@ -29,6 +28,7 @@ else if(window.location.pathname == "/queue"){
     var getQueue = function(){
       $.get("/list",function(data){
       if(data.length > 0){
+        console.log(data);
       $('#tracks').remove();
       $('.data').append('<div id="tracks" class="span4"><h2>Queue</h2><ol></ol></div>');
       html='';
@@ -74,7 +74,7 @@ else if(window.location.pathname == "/queue"){
 
               if(x+1<=y)
               {
-                load_queue(x+1,y);
+                load_queue(x+1,y,data);
               }
             })
           }
@@ -96,7 +96,7 @@ else if(window.location.pathname == "/queue"){
 
               if(x+1<=y)
               {
-                load_queue(x+1,y);
+                load_queue(x+1,y,data);
               }
             })
           }
@@ -253,6 +253,12 @@ else if(window.location.pathname == "/queue"){
         load_recent(0,(data.length - 1));
       }
       //
+
+      //
+    })
+    };
+
+    var addClickEvents = function(){
       $('.data').delegate('#recent ol li','click',function(e){
         //console.log('We clicked on a song from recent list');
         var trackId=this.getAttribute('mid');
@@ -290,12 +296,11 @@ else if(window.location.pathname == "/queue"){
           })
         })
       });
-      //
-    })
-    };
+    }
     getNowPlaying();
     getQueue();
     getRecent();
+    addClickEvents();
 
 });
 }
