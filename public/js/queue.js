@@ -101,10 +101,11 @@ else if(window.location.pathname == "/queue"){
 
     //Logic for page rendering
     var renderPage = function(data){
-      $('.data').append('<div id="nowplaying" class="span4"><h2>Now Playing</h2><div class="combo"></div></div>');
-      htmlnew='';
+
       if(data.length > 0){
 
+        $('.data').append('<div id="nowplaying" class="span4"><h2>Now Playing</h2><div class="combo"></div></div>');
+        var htmlnew='';
         // matching number, muzi songs ID's are all numeric
         patt = /^\d+$/g;
         if(data[0].match(patt))
