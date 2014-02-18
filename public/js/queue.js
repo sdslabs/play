@@ -1,4 +1,5 @@
-if(window.location.pathname !== "/queue") {
+(function($){
+  if(window.location.pathname !== "/queue") {
   //for home
   $('.stop').click(function(){
     $.get("/kill");
@@ -11,22 +12,34 @@ else if(window.location.pathname == "/queue"){
   $.getJSON('/config.json',function(config){
 
     $('.stop').click(function(){
-    $.get("/kill");
-    $('#nowplaying').remove();
-    //rerender page
-    $.post("/next",{},function(data){
-      renderPage(data);
-      });
+      $.get("/kill");
+      $('#nowplaying').remove();
+      //rerender page
+      $.post("/next",{},function(data){
+        renderPage(data);
+        getRecent();
+        });
+      getQueue();
+      getRecent();
     });
 
-    $.get("/list",function(data){
+
+
+    //Get Queue Logic
+    var getQueue = function(){
+      $.get("/list",function(data){
       if(data.length > 0){
       $('#tracks').remove();
       $('.data').append('<div id="tracks" class="span4"><h2>Queue</h2><ol></ol></div>');
       html='';
 
-      function load_queue(x,y)
-      {
+
+      // loading the queue data
+      load_queue(0,(data.length - 1), data);
+      }
+    });
+    };
+    var load_queue = function (x,y,data){
           // youtube link (of any kind : multiple query parameters also)
            if(data[x][1] == 'youtube')
           {
@@ -87,16 +100,14 @@ else if(window.location.pathname == "/queue"){
               }
             })
           }
-      }
-      // loading the queue data
-      load_queue(0,(data.length - 1));
-      }
-    })
+    };
 
     // now playing data
-    $.get("/current",function(data){
+    var getNowPlaying = function(){
+      $.get("/current",function(data){
       renderPage(data);
-    });
+      });
+    };
 
 
     //Logic for page rendering
@@ -180,106 +191,112 @@ else if(window.location.pathname == "/queue"){
       }
     };
 
-  // recent songs
-  $.get("/recent", function(data){
-      if(data.length > 0){
-        $('#recent').remove();
-        $('.data').append('<div id="recent" class="span4"><h2>Recent</h2><ol></ol></div>');
+    // recent songs
+    var getRecent = function(){
 
-        html_recent = '';
-        function load_recent(x,y)
-      {
+      $.get("/recent", function(data){
+        if(data.length > 0){
+          $('#recent').remove();
+          $('.data').append('<div id="recent" class="span4"><h2>Recent</h2><ol></ol></div>');
 
-        // matching number, muzi songs ID's are all numeric
-        patt = /^\d+$/g;
-        if(data[x].match(patt))
+          html_recent = '';
+          function load_recent(x,y)
         {
-          $.get(config.muzi_root+'ajax/track/',{id:data[x]},function(track){
-          html_recent+='<li mid="'+track.id
-            +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-            +config.pics_root
-            +track.albumId
-            +'.jpg"><div class="entry1">'
-            +track.title
-            +'</div><div class="entry2">'
-            +track.artist
-            +'</div><div style="clear:both">'
-            +'</div></li>';
 
-            $('#recent ol').html(html_recent);
+          // matching number, muzi songs ID's are all numeric
+          patt = /^\d+$/g;
+          if(data[x].match(patt))
+          {
+            $.get(config.muzi_root+'ajax/track/',{id:data[x]},function(track){
+            html_recent+='<li mid="'+track.id
+              +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
+              +config.pics_root
+              +track.albumId
+              +'.jpg"><div class="entry1">'
+              +track.title
+              +'</div><div class="entry2">'
+              +track.artist
+              +'</div><div style="clear:both">'
+              +'</div></li>';
 
-            if(x+1<=y)
-            {
-              load_recent(x+1,y);
-            }
-          })
+              $('#recent ol').html(html_recent);
+
+              if(x+1<=y)
+              {
+                load_recent(x+1,y);
+              }
+            })
+          }
+          // youtube ID's have alphanumric and some special characters also
+          else
+          {
+            $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + data[x] + '?v=2&alt=jsonc', function(json){
+            html_recent+='<li mid="'+data[x]
+              +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
+              +config.pics_root
+              +'.jpg"><div class="entry1">'
+              +json.data.title
+              +'</div><div class="entry2">'
+              +json.data.uploader
+              +'</div><div style="clear:both">'
+              +'</div></li>';
+              $('#recent ol').html(html_recent);
+
+              if(x+1<=y)
+              {
+                load_recent(x+1,y);
+              }
+            })
+          }
         }
-        // youtube ID's have alphanumric and some special characters also
-        else
-        {
-          $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + data[x] + '?v=2&alt=jsonc', function(json){
-          html_recent+='<li mid="'+data[x]
-            +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-            +config.pics_root
-            +'.jpg"><div class="entry1">'
-            +json.data.title
-            +'</div><div class="entry2">'
-            +json.data.uploader
-            +'</div><div style="clear:both">'
-            +'</div></li>';
-            $('#recent ol').html(html_recent);
-
-            if(x+1<=y)
-            {
-              load_recent(x+1,y);
-            }
-          })
-        }
+        //
+        load_recent(0,(data.length - 1));
       }
       //
-      load_recent(0,(data.length - 1));
-    }
-    //
-    $('.data').delegate('#recent ol li','click',function(e){
-      //console.log('We clicked on a song from recent list');
-      var trackId=this.getAttribute('mid');
-      // notification on adding a song
-      // checking that, is there a song playing right now or not
-      datavalue = "";
-      This = $(this);
-      $.get("/now", function(result){
-        if(result)
-        {
-                datavalue = "added song to queue";
-                //console.log(datavalue);
-                This.attr("data-hint",""+datavalue+"");
-                This.addClass("hint--top hint--bounce");
-        }
-        else
-        {
-                datavalue = "playing it right now";
-                //console.log(datavalue);
-                This.attr("data-hint",""+datavalue+"");
-                This.addClass("hint--top hint--bounce");
-        }
-      })
+      $('.data').delegate('#recent ol li','click',function(e){
+        //console.log('We clicked on a song from recent list');
+        var trackId=this.getAttribute('mid');
+        // notification on adding a song
+        // checking that, is there a song playing right now or not
+        datavalue = "";
+        This = $(this);
+        $.get("/now", function(result){
+          if(result)
+          {
+                  datavalue = "added song to queue";
+                  //console.log(datavalue);
+                  This.attr("data-hint",""+datavalue+"");
+                  This.addClass("hint--top hint--bounce");
+          }
+          else
+          {
+                  datavalue = "playing it right now";
+                  //console.log(datavalue);
+                  This.attr("data-hint",""+datavalue+"");
+                  This.addClass("hint--top hint--bounce");
+          }
+        })
 
-      $(this).mouseleave(function(){
-        $(this).removeClass("hint--top");
-        $(this).removeAttr("data-hint");
+        $(this).mouseleave(function(){
+          $(this).removeClass("hint--top");
+          $(this).removeAttr("data-hint");
+        });
+        //
+        $.get(config.muzi_root+"ajax/track/",{id:trackId},function(data){
+          var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
+          $.post('/play',{url:config.music_root+url,id:data.id},function(){
+            //console.log("Sent a play request");
+            $.get(config.muzi_root+'ajax/track/log.php',{id:data.id});
+          })
+        })
       });
       //
-      $.get(config.muzi_root+"ajax/track/",{id:trackId},function(data){
-        var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
-        $.post('/play',{url:config.music_root+url,id:data.id},function(){
-          //console.log("Sent a play request");
-          $.get(config.muzi_root+'ajax/track/log.php',{id:data.id});
-        })
-      })
-    });
-    //
-  })
+    })
+    };
+    getNowPlaying();
+    getQueue();
+    getRecent();
 
-})
-
+});
 }
+}(window.jQuery));
