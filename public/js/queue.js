@@ -12,13 +12,11 @@ else if(window.location.pathname == "/queue"){
 
     $('.stop').click(function(){
     $.get("/kill");
-    $('#nowplaying').html('');
+    $('#nowplaying').remove();
     //rerender page
-    $.get("/current",function(data){
-      console.log(data);
+    $.post("/next",{},function(data){
       renderPage(data);
       });
-
     });
 
     $.get("/list",function(data){

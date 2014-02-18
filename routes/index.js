@@ -39,6 +39,10 @@ exports.recent = function(req,res){
   res.send(recent);
 }
 
+exports.next = function (req, res) {
+  res.send(vlc.getNext());
+}
+
 exports.now = function(req,res){
   var now = vlc.rightnow();
   if(now==0){res.send(false);}
