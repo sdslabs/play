@@ -1,15 +1,16 @@
 (function($){
-  if(window.location.pathname !== "/queue") {
-  //for home
-  $('.stop').click(function(){
-    $.get("/kill");
-  });
-}
+
 
 else if(window.location.pathname == "/queue"){
 
 
-  $.getJSON('/config.json',function(config){
+    var getConfig = function(){
+      $.getJSON('/config.json',function(config){
+      return config;
+      });
+    };
+
+    var config = getConfig();
 
     var killHandler = function(){
         $('.stop').click(function(){
@@ -303,6 +304,5 @@ else if(window.location.pathname == "/queue"){
     getRecent();
     addClickEvents();
 
-});
 }
 }(window.jQuery));

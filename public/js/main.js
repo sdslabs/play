@@ -1,6 +1,14 @@
 $(document).ready(function(){
     $('#searchbox').focus();
 });
+
+if(window.location.pathname !== "/queue") {
+  //for home
+  $('.stop').click(function(){
+    $.get("/kill");
+  });
+}
+
 $.getJSON('/config.json',function(config){
   $("#searchbox").bind('keydown',function(e){
     //
