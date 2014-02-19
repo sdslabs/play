@@ -16,6 +16,8 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(path.join(__dirname,'./public')));
   app.set('port', process.env.PORT || 3000);
+  app.set('view engine','jade');
+  app.set('views',__dirname+'/public/layouts');
 });
 
 // Routes

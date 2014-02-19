@@ -1,16 +1,10 @@
 (function($){
 
 
-else if(window.location.pathname == "/queue"){
+if(window.location.pathname == "/queue"){
 
+    $.getJSON('/config.json',function(config){
 
-    var getConfig = function(){
-      $.getJSON('/config.json',function(config){
-      return config;
-      });
-    };
-
-    var config = getConfig();
 
     var killHandler = function(){
         $('.stop').click(function(){
@@ -29,7 +23,6 @@ else if(window.location.pathname == "/queue"){
     var getQueue = function(){
       $.get("/list",function(data){
       if(data.length > 0){
-        console.log(data);
       $('#tracks').remove();
       $('.data').append('<div id="tracks" class="span4"><h2>Queue</h2><ol></ol></div>');
       html='';
@@ -41,7 +34,9 @@ else if(window.location.pathname == "/queue"){
     });
     };
     var load_queue = function (x,y,data){
+
           // youtube link (of any kind : multiple query parameters also)
+
            if(data[x][1] == 'youtube')
           {
             url = data[x][0];
@@ -113,6 +108,7 @@ else if(window.location.pathname == "/queue"){
 
     //Logic for page rendering
     var renderPage = function(data){
+
 
       if(data.length > 0){
 
@@ -195,6 +191,7 @@ else if(window.location.pathname == "/queue"){
     // recent songs
     var getRecent = function(){
 
+
       $.get("/recent", function(data){
         if(data.length > 0){
           $('#recent').remove();
@@ -260,6 +257,7 @@ else if(window.location.pathname == "/queue"){
     };
 
     var addClickEvents = function(){
+
       $('.data').delegate('#recent ol li','click',function(e){
         //console.log('We clicked on a song from recent list');
         var trackId=this.getAttribute('mid');
@@ -304,5 +302,6 @@ else if(window.location.pathname == "/queue"){
     getRecent();
     addClickEvents();
 
+});
 }
 }(window.jQuery));

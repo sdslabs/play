@@ -1,5 +1,5 @@
 exports.index = function(req, res){
-  res.sendfile("public/index.html");
+  res.render("index");
 };
 var vlc=require("../lib/vlc.js");
 
@@ -26,7 +26,7 @@ exports.repeat = function(req,res){
 };
 
 exports.queuelist=function(req,res){
-  res.sendfile("public/queue.html");
+  res.render("queue");
 };
 
 exports.list=function(req,res){
