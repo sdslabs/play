@@ -1,44 +1,55 @@
-(function($){
+(function($, play){
 
 
-if(window.location.pathname == "/queue"){
     function Queue(){
       this.config = null;
     };
 
     var QP = Queue.prototype;
 
+    QP.checkLocation = function(){
+      if(window.location.pathname == "/queue")
+        return true;
+      else
+        return false;
+    };
+
     QP.initialize = function(){
-      this.getConfig();
-      this.killHandler();
-      this.getNowPlaying();
-      this.getQueue();
-      this.getRecent();
-      this.addClickEvents();
-    }
+      if(this.checkLocation()){
+        this.getConfig();
+        this.killHandler();
+        this.getNowPlaying();
+        this.getQueue();
+        this.getRecent();
+        this.addClickEvents();
+      }
+    };
 
     QP.getConfig = function(){
+      var This = this;
       return $.getJSON('/config.json').done(
         function(data){
-          this.config = data;
+          This.config = data;
         });
-    }
+    };
 
     QP.killHandler = function(){
-        $('.stop').click(function(){
+      var This = this;
+      $('.stop').click(function(){
         $.get("/kill");
         $('#nowplaying').remove();
         //rerender page
         $.post("/next",{},function(data){
-          this.renderPage(data);
+          This.renderPage(data);
           });
-        this.getQueue();
-        this.getRecent();
+        This.getQueue();
+        This.getRecent();
       });
     };
 
     //Get Queue Logic
     QP.getQueue = function(){
+      var This = this;
       $.get("/list",function(data){
       if(data.length > 0){
       $('#tracks').remove();
@@ -47,11 +58,12 @@ if(window.location.pathname == "/queue"){
 
 
       // loading the queue data
-      this.loadQueue(0,(data.length - 1), data);
+      This.loadQueue(0,(data.length - 1), data);
       }
     });
     };
     QP.loadQueue = function (x,y,data){
+      var This = this;
 
           // youtube link (of any kind : multiple query parameters also)
 
@@ -77,7 +89,7 @@ if(window.location.pathname == "/queue"){
             $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + id + '?v=2&alt=jsonc', function(json){
               html+='<li mid="'+ id
                 +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-                +this.config.pics_root
+                +This.config.pics_root
                 +'.jpg"><div class="entry1">'
                 +json.data.title
                 +'</div><div class="entry2">'
@@ -88,17 +100,17 @@ if(window.location.pathname == "/queue"){
 
               if(x+1<=y)
               {
-                this.loadQueue(x+1,y,data);
+                This.loadQueue(x+1,y,data);
               }
             })
           }
           // muzi link
           else{
-          $.get(this.config.muzi_root + 'ajax/track/', {id:data[x][1]}, function(track){
+          $.get(This.config.muzi_root + 'ajax/track/', {id:data[x][1]}, function(track){
 
               html+='<li mid="'+track.id
                 +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-                +this.config.pics_root
+                +This.config.pics_root
                 +track.albumId
                 +'.jpg"><div class="entry1">'
                 +track.title
@@ -110,7 +122,7 @@ if(window.location.pathname == "/queue"){
 
               if(x+1<=y)
               {
-                this.loadQueue(x+1,y,data);
+                This.loadQueue(x+1,y,data);
               }
             })
           }
@@ -118,14 +130,16 @@ if(window.location.pathname == "/queue"){
 
     // now playing data
     QP.getNowPlaying = function(){
+      var This = this;
       $.get("/current",function(data){
-        this.renderPage(data);
+        This.renderPage(data);
       });
     };
 
 
     //Logic for page rendering
     QP.renderPage = function(data){
+      var This = this;
 
 
       if(data.length > 0){
@@ -136,14 +150,14 @@ if(window.location.pathname == "/queue"){
         patt = /^\d+$/g;
         if(data[0].match(patt))
         {
-          $.get(this.config.muzi_root+'ajax/track/',{id:data[0]},function(track){
+          $.get(This.config.muzi_root+'ajax/track/',{id:data[0]},function(track){
 
             if(track.lyrics == 'NOT_FOUND' || track.lyrics == null ) {
               track.lyrics = null;
             }
           htmlnew+='<div mid="'+track.id
             +'"><img src="'
-            +this.config.pics_root
+            +This.config.pics_root
             +track.albumId
             +'.jpg">'
             +'<div class="entry1">'
@@ -179,7 +193,7 @@ if(window.location.pathname == "/queue"){
           $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + data[0] + '?v=2&alt=jsonc', function(json){
           htmlnew+='<div mid="'+data[0]
             +'"><img src="'
-            +this.config.pics_root
+            +This.config.pics_root
             +'.jpg"><div class="entry1">'
             +json.data.title
             +'<img src="../repeat.png" id="repeatButton" alt="Repeat" title="Repeat this song"/>'
@@ -208,6 +222,7 @@ if(window.location.pathname == "/queue"){
 
     // recent songs
     QP.getRecent = function(){
+      var This = this;
 
 
       $.get("/recent", function(data){
@@ -218,21 +233,22 @@ if(window.location.pathname == "/queue"){
           html_recent = '';
 
         //
-        loadRecent(0,(data.length - 1),data);
+        This.loadRecent(0,(data.length - 1),data);
       }
 
     })
     };
 
     QP.loadRecent = function(x,y,data){
+      var This = this;
           // matching number, muzi songs ID's are all numeric
           patt = /^\d+$/g;
           if(data[x].match(patt))
           {
-            $.get(this.config.muzi_root+'ajax/track/',{id:data[x]},function(track){
+            $.get(This.config.muzi_root+'ajax/track/',{id:data[x]},function(track){
             html_recent+='<li mid="'+track.id
               +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-              +this.config.pics_root
+              +This.config.pics_root
               +track.albumId
               +'.jpg"><div class="entry1">'
               +track.title
@@ -245,7 +261,7 @@ if(window.location.pathname == "/queue"){
 
               if(x+1<=y)
               {
-                this.loadRecent(x+1,y,data);
+                This.loadRecent(x+1,y,data);
               }
             })
           }
@@ -255,7 +271,7 @@ if(window.location.pathname == "/queue"){
             $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + data[x] + '?v=2&alt=jsonc', function(json){
             html_recent+='<li mid="'+data[x]
               +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-              +this.config.pics_root
+              +This.config.pics_root
               +'.jpg"><div class="entry1">'
               +json.data.title
               +'</div><div class="entry2">'
@@ -266,14 +282,15 @@ if(window.location.pathname == "/queue"){
 
               if(x+1<=y)
               {
-                this.loadRecent(x+1,y);
+                This.loadRecent(x+1,y);
               }
             })
           }
 
-    }
+    };
 
     QP.addClickEvents = function(){
+      var handle = this;
 
       $('.data').delegate('#recent ol li','click',function(e){
         //console.log('We clicked on a song from recent list');
@@ -303,18 +320,17 @@ if(window.location.pathname == "/queue"){
           $(this).removeClass("hint--top");
           $(this).removeAttr("data-hint");
         });
-        //
-        $.get(this.config.muzi_root+"ajax/track/",{id:trackId},function(data){
+        $.get(handle.config.muzi_root+"ajax/track/",{id:trackId},function(data){
           var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
           $.post('/play',{url:this.config.music_root+url,id:data.id},function(){
             //console.log("Sent a play request");
-            $.get(this.config.muzi_root+'ajax/track/log.php',{id:data.id});
+            $.get(handle.config.muzi_root+'ajax/track/log.php',{id:data.id});
           })
         })
       });
-    }
+    };
 
+    play.queue = new Queue();
+    play.queue.initialize();
 
-
-}
-}(window.jQuery));
+}( window.jQuery, window.Play));
