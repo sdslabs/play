@@ -2,9 +2,14 @@
 
 
 if(window.location.pathname == "/queue"){
+    var config;
 
-    $.getJSON('/config.json',function(config){
-
+    var getConfig = function(){
+      return $.getJSON('/config.json').done(
+        function(data){
+          config = data;
+        });
+    }
 
     var killHandler = function(){
         $('.stop').click(function(){
@@ -296,12 +301,13 @@ if(window.location.pathname == "/queue"){
         })
       });
     }
+    getConfig();
     killHandler();
     getNowPlaying();
     getQueue();
     getRecent();
     addClickEvents();
 
-});
+
 }
 }(window.jQuery));
