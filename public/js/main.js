@@ -1,10 +1,20 @@
-var focusSearchBar = function(){
+var Main = function(){
+  this.config = null;
+  this.dataArray = null;
+}
+
+var MP = Main.prototype;
+
+//Aleternate Prototype handle
+var AMP = Main.prototype;
+
+MP.focusSearchBar = function(){
   $(document).ready(function(){
     $('#searchbox').focus();
   });
 }
 
-var checkPathname = function(){
+MP.checkPathname = function(){
   if(window.location.pathname == "/") {
     return true;
   } else {
@@ -12,20 +22,20 @@ var checkPathname = function(){
   }
 };
 
-var killHandler = function(){
+MP.killHandler = function(){
   $('.stop').click(function(){
     $.get("/kill");
   });
 };
 
-var getConfig = function(){
+MP.getConfig = function(){
   $.getJSON('/config.json').done(
     function(data){
       this.config = data;
     });
 };
 
-var bindKeydown = function(){
+MP.bindKeydown = function(){
   $("#searchbox").bind('keydown',function(e){
   //Bind the enter key to the handler
   if(e.keyCode===13){
@@ -118,28 +128,30 @@ var bindKeydown = function(){
 });
 }
 
-//showing top songs from muzi leaderboard
-$.get(config.muzi_root+"ajax/track/top.php", function(data){
+MP.setTop20 = function(){
+  //showing top songs from muzi leaderboard
+  $.get(config.muzi_root+"ajax/track/top.php", function(data){
 
-  var dataHandle = $('.data');
-  // 4 columns for top songs
-  dataHandle.append('<div id="_1" class="span3 top"><ol></ol></div>');
-  dataHandle.append('<div id="_2" class="span3 top"><ol></ol></div>');
-  dataHandle.append('<div id="_3" class="span3 top"><ol></ol></div>');
-  dataHandle.append('<div id="_4" class="span3 top"><ol></ol></div>');
+    var dataHandle = $('.data');
+    // 4 columns for top songs
+    dataHandle.append('<div id="_1" class="span3 top"><ol></ol></div>');
+    dataHandle.append('<div id="_2" class="span3 top"><ol></ol></div>');
+    dataHandle.append('<div id="_3" class="span3 top"><ol></ol></div>');
+    dataHandle.append('<div id="_4" class="span3 top"><ol></ol></div>');
 
 
 
-  // showing top 20 songs, 5 per column
-  $('#_1').html(html(0) + html(1) + html(2) + html(3) + html(4));
-  $('#_2').html(html(5) + html(6) + html(7) + html(8) + html(9));
-  $('#_3').html(html(10) + html(11) + html(12) + html(13) + html(14));
-  $('#_4').html(html(15) + html(16) + html(17) + html(18) + html(19));
+    // showing top 20 songs, 5 per column
+    $('#_1').html(html(0) + html(1) + html(2) + html(3) + html(4));
+    $('#_2').html(html(5) + html(6) + html(7) + html(8) + html(9));
+    $('#_3').html(html(10) + html(11) + html(12) + html(13) + html(14));
+    $('#_4').html(html(15) + html(16) + html(17) + html(18) + html(19));
 
-})
+  })
+}
 //
 
-var htmlTop20 = function(x){
+MP.htmlTop20 = function(x){
   if(data[x].title.length > 28)
     {
       tempt = data[x].title.substring(0,26);
@@ -164,9 +176,9 @@ var htmlTop20 = function(x){
     +'</div></li>'
 
     return content;
-  }
+}
 
-var addClickEvents = function(){
+MP.addClickEvents = function(){
     // adding a top song to queue, when clicked on homepage
   $('.data').delegate('.top li','click',function(e){
     //console.log('We clicked on a song from top list');
@@ -176,25 +188,25 @@ var addClickEvents = function(){
     datavalue = "";
     This = $(this);
     $.get("/now", function(result){
-  if(result)
-  {
-    datavalue = "added song to queue";
-    //console.log(datavalue);
-    This.attr("data-hint",""+datavalue+"");
-    This.addClass("hint--top hint--bounce");
-  }
-  else
-  {
-    datavalue = "playing it right now";
-                //console.log(datavalue);
-                This.attr("data-hint",""+datavalue+"");
-    This.addClass("hint--top hint--bounce");
-  }
+      if(result)
+      {
+        datavalue = "added song to queue";
+        //console.log(datavalue);
+        This.attr("data-hint",""+datavalue+"");
+        This.addClass("hint--top hint--bounce");
+      }
+      else
+      {
+        datavalue = "playing it right now";
+                    //console.log(datavalue);
+                    This.attr("data-hint",""+datavalue+"");
+        This.addClass("hint--top hint--bounce");
+      }
     })
 
     $(this).mouseleave(function(){
-  $(this).removeClass("hint--top");
-  $(this).removeAttr("data-hint");
+      $(this).removeClass("hint--top");
+      $(this).removeAttr("data-hint");
     });
     //
     $.get(config.muzi_root+"ajax/track/",{id:trackId},function(data){
