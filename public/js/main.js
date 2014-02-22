@@ -11,23 +11,26 @@ if(window.location.pathname !== "/queue") {
 
 $.getJSON('/config.json',function(config){
   $("#searchbox").bind('keydown',function(e){
-    //
-    $('#_1').remove();
-    $('#_2').remove();
-    $('#_3').remove();
-    $('#_4').remove();
-    $('.hr').remove();
-
     //Bind the enter key to the handler
     if(e.keyCode===13){
+
+      //Remove only if enter key has been smashed!
+      $('#_1').remove();
+      $('#_2').remove();
+      $('#_3').remove();
+      $('#_4').remove();
+      $('.hr').remove();
+
       var text=this.value;
+
       if(text.substr(0,4)==="http"){
         //We have a youtube link for us
         $.post('/youtube',{link:text});
         //Empty the search box if its youtube link
         this.value = '';
+
       }
-      else{
+      else {
         $.get(config.muzi_root+"ajax/search/",{search:text},function(data){
 		      // removing old data to show new
 		      $('#alert').remove();
