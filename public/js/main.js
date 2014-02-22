@@ -7,6 +7,8 @@
 
   var MP = Main.prototype;
 
+
+
   //Aleternate Prototype handle
   var AMP = Main.prototype;
 
@@ -26,6 +28,11 @@
     });
   };
 
+  MP.to403 = function( s, e ){
+    if( e )
+    alert('Only lab member from lab can play songs');
+  };
+
   MP.checkPathname = function(){
     if(window.location.pathname == "/") {
       return true;
@@ -35,8 +42,9 @@
   };
 
   MP.killHandler = function(){
+
     $('.stop').click(function(){
-      $.get("/kill");
+      $.get("/kill").fail(function(s,e){ MP.to403(s,e) });
     });
   };
 
@@ -67,7 +75,7 @@
 
       if(text.substr(0,4)==="http"){
         //We have a youtube link for us
-        $.post('/youtube',{link:text});
+        $.post('/youtube',{link:text}).fail(function(s,e){ MP.to403(s,e) });
         //Empty the search box if its youtube link
         this.value = '';
 
@@ -233,7 +241,7 @@
         $.post('/play',{url:AMP.config.music_root+url,id:data.id},function(){
           //console.log("Sent a play request");
           $.get(AMP.config.muzi_root+'ajax/track/log.php',{id:data.id});
-        })
+        }).fail(function(s,e){ AMP.to403(s,e) });
       })
     });
 
@@ -271,11 +279,12 @@
         $.post('/play',{url:AMP.config.music_root+url,id:data.id},function(){
           //console.log("Sent a play request");
           $.get(AMP.config.muzi_root+'ajax/track/log.php',{id:data.id});
-        })
+        }).fail(function(s,e){ AMP.to403(s,e) });
       })
     });
 
     $('.data').delegate('#artists ol li','click',function(e){
+
       //We clicked on an artist!
 
       var artistId=this.getAttribute('mid');
@@ -301,6 +310,7 @@
     });
 
     $('.data').delegate('#albums ol li','click',function(e){
+
       //console.log('We clicked on an album!');
 
       var albumId=this.getAttribute('mid');

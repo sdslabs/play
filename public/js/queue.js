@@ -14,6 +14,11 @@
         return false;
     };
 
+    QP.to403 = function( s,e ){
+      if( e )
+      alert('Only lab member from lab can play songs');
+    }
+
     QP.initialize = function(){
       if(this.checkLocation()){
         this.killHandler();
@@ -36,12 +41,12 @@
     QP.killHandler = function(){
       var This = this;
       $('.stop').click(function(){
-        $.get("/kill");
+        $.get("/kill").error( function(){This.to403(s,e) });;
         $('#nowplaying').remove();
         //rerender page
         $.post("/next",{},function(data){
           This.renderPage(data);
-          });
+          }).error( function(){This.to403(s,e) });;
         This.getQueue();
         This.getRecent();
       });
@@ -206,6 +211,7 @@
         }
 
         $('.data').delegate('#repeatButton','click',function(){
+
           $.post('/repeat',{} ,function(result){
             //console.log(result);
             if(result)
@@ -214,7 +220,7 @@
                 $(".entry1").attr("data-hint",""+datavalue+"");
                 $(".entry1").addClass("hint--left hint--bounce");
             }
-          });
+          }).error( function(){This.to403(s,e) });
         });
 
       }
@@ -293,6 +299,7 @@
       var handle = this;
 
       $('.data').delegate('#recent ol li','click',function(e){
+        handle.checkIP();
         //console.log('We clicked on a song from recent list');
         var trackId=this.getAttribute('mid');
         // notification on adding a song
@@ -325,7 +332,7 @@
           $.post('/play',{url:this.config.music_root+url,id:data.id},function(){
             //console.log("Sent a play request");
             $.get(handle.config.muzi_root+'ajax/track/log.php',{id:data.id});
-          })
+          }).error( function(){This.to403(s,e) });
         })
       });
     };

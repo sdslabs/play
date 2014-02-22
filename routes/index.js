@@ -2,6 +2,7 @@ exports.index = function(req, res){
   res.render("index");
 };
 var vlc=require("../lib/vlc.js");
+var ipClass = require("../lib/iptest.js");
 
 exports.play = function(req,res){
   vlc.play(req.body.url,req.body.id);
@@ -15,6 +16,19 @@ exports.youtube=function(req,res){
   var link=req.body.link;
   vlc.play(link,'youtube');
 };
+
+exports.checkIp = function(req, res, next ){
+  var ip = req.headers['x-forwarded-for'] ||
+     req.connection.remoteAddress ||
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress;
+  var valid = ipClass.testIP(ip);
+  if(valid == true){
+    next();
+  } else {
+    res.status(403).send();
+  }
+}
 
 exports.kill=function(req,res){
   vlc.kill();
