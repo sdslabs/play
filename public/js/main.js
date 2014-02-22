@@ -101,10 +101,6 @@ $.getJSON('/config.json',function(config){
     }
   });
 
-  $('.stop').click(function(){
-    $.get("/kill");
-  });
-
   //showing top songs from muzi leaderboard
   $.get(config.muzi_root+"ajax/track/top.php", function(data){
 
