@@ -1,9 +1,9 @@
 (function( $, play ){
 
-  var Main = function(){
+  function Main(){
     this.config = null;
     this.dataArray = null;
-  }
+  };
 
   var MP = Main.prototype;
 
@@ -11,21 +11,20 @@
   var AMP = Main.prototype;
 
   MP.initialize = function(){
-    if(this.checkPathName){
+    if(this.checkPathname()){
       this.focusSearchBar();
       this.killHandler();
-      this.getConfig();
       this.bindKeydown();
       this.setTop20();
       this.addClickEvents();
     }
-  }
+  };
 
   MP.focusSearchBar = function(){
     $(document).ready(function(){
       $('#searchbox').focus();
     });
-  }
+  };
 
   MP.checkPathname = function(){
     if(window.location.pathname == "/") {
@@ -41,15 +40,19 @@
     });
   };
 
-  MP.getConfig = function(){
-    $.getJSON('/config.json').done(
-      function(data){
-        this.config = data;
-      });
-  };
+  MP.setup = function(){
+      var This = this;
+      $.getJSON('/config.json').done(
+        function(data){
+          This.config = data;
+          AMP.config = data;
+          This.initialize();
+        });
+    };
 
   MP.bindKeydown = function(){
     $("#searchbox").bind('keydown',function(e){
+
     //Bind the enter key to the handler
     if(e.keyCode===13){
 
@@ -134,14 +137,15 @@
 
             }
             $('#albums ol').html(html);
-  }
+          }
         });
       }
     }
   });
-  }
+  };
 
   MP.setTop20 = function(){
+    // console.log(this.config);
     //showing top songs from muzi leaderboard
     $.get(AMP.config.muzi_root+"ajax/track/top.php", function(data){
 
@@ -157,16 +161,15 @@
 
 
       // showing top 20 songs, 5 per column
-      $('#_1').html(html(0) + html(1) + html(2) + html(3) + html(4));
-      $('#_2').html(html(5) + html(6) + html(7) + html(8) + html(9));
-      $('#_3').html(html(10) + html(11) + html(12) + html(13) + html(14));
-      $('#_4').html(html(15) + html(16) + html(17) + html(18) + html(19));
+      $('#_1').html(AMP.html(0) + AMP.html(1) + AMP.html(2) + AMP.html(3) + AMP.html(4));
+      $('#_2').html(AMP.html(5) + AMP.html(6) + AMP.html(7) + AMP.html(8) + AMP.html(9));
+      $('#_3').html(AMP.html(10) + AMP.html(11) + AMP.html(12) + AMP.html(13) + AMP.html(14));
+      $('#_4').html(AMP.html(15) + AMP.html(16) + AMP.html(17) + AMP.html(18) + AMP.html(19));
 
     })
-  }
-  //
+  };
 
-  MP.htmlTop20 = function(x){
+  MP.html = function(x){
     var data = this.dataArray;
     if(data[x].title.length > 28)
       {
@@ -192,7 +195,7 @@
       +'</div></li>'
 
       return content;
-  }
+  };
 
   MP.addClickEvents = function(){
       // adding a top song to queue, when clicked on homepage
@@ -233,7 +236,6 @@
         })
       })
     });
-    //
 
     $('.data').delegate('#tracks ol li','click',function(e){
       //console.log('We clicked on a song!');
@@ -326,6 +328,9 @@
         $('#tracks ol').html(html);
       })
     });
-  }
+  };
+
+  play.main = new Main();
+  play.main.setup();
 }( window.jQuery, window.Play ));
 
