@@ -16,7 +16,6 @@
 
     QP.initialize = function(){
       if(this.checkLocation()){
-        this.getConfig();
         this.killHandler();
         this.getNowPlaying();
         this.getQueue();
@@ -25,11 +24,12 @@
       }
     };
 
-    QP.getConfig = function(){
+    QP.setup = function(){
       var This = this;
       return $.getJSON('/config.json').done(
         function(data){
           This.config = data;
+          This.initialize();
         });
     };
 
@@ -331,6 +331,6 @@
     };
 
     play.queue = new Queue();
-    play.queue.initialize();
+    play.queue.setup();
 
 }( window.jQuery, window.Play));
