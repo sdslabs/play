@@ -17,7 +17,19 @@
     QP.to403 = function( s,e ){
       if( e )
       alert('Only lab member from lab can play songs');
-    }
+    };
+
+    QP.showTooltip = function(obj, value, pos){
+    obj.attr("data-hint",""+datavalue+"");
+    obj.addClass("hint--"+top+" hint--bounce");
+    };
+
+    QP.removeTooltip = function(obj, pos){
+      obj.mouseleave(function(){
+          obj.removeClass("hint--"+pos);
+          obj.removeAttr("data-hint");
+        });
+    };
 
     QP.initialize = function(){
       if(this.checkLocation()){
@@ -219,8 +231,10 @@
                 var datavalue = "The song will be repeated";
                 $(".entry1").attr("data-hint",""+datavalue+"");
                 $(".entry1").addClass("hint--left hint--bounce");
+                QP.showTooltip($(".entry1"), datavalue, "left");
             }
           }).error( function(){This.to403(s,e) });
+          QP.removeTooltip($(".entry"),"left");
         });
 
       }
@@ -299,41 +313,37 @@
       var handle = this;
 
       $('.data').delegate('#recent ol li','click',function(e){
-        handle.checkIP();
         //console.log('We clicked on a song from recent list');
         var trackId=this.getAttribute('mid');
         // notification on adding a song
         // checking that, is there a song playing right now or not
         datavalue = "";
         This = $(this);
-        $.get("/now", function(result){
-          if(result)
-          {
-                  datavalue = "added song to queue";
-                  //console.log(datavalue);
-                  This.attr("data-hint",""+datavalue+"");
-                  This.addClass("hint--top hint--bounce");
-          }
-          else
-          {
-                  datavalue = "playing it right now";
-                  //console.log(datavalue);
-                  This.attr("data-hint",""+datavalue+"");
-                  This.addClass("hint--top hint--bounce");
-          }
-        })
 
-        $(this).mouseleave(function(){
-          $(this).removeClass("hint--top");
-          $(this).removeAttr("data-hint");
+
+      $.get(handle.config.muzi_root+"ajax/track/",{id:trackId},function(data){
+        var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
+        $.post('/play',{url:this.config.music_root+url,id:data.id},function(){
+          //console.log("Sent a play request");
+          $.get(handle.config.muzi_root+'ajax/track/log.php',{id:data.id});
+        }).error( function(){This.to403(s,e) });
+      })
+
+      $.get("/now", function(result){
+        if(result)
+        {
+          datavalue = "Added song to queue";
+          QP.showTooltip(This, datavalue, top);
+        }
+        else
+        {
+          datavalue = "Playing it right now";
+          QP.showTooltip(This, datavalue, top);
+        }
         });
-        $.get(handle.config.muzi_root+"ajax/track/",{id:trackId},function(data){
-          var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
-          $.post('/play',{url:this.config.music_root+url,id:data.id},function(){
-            //console.log("Sent a play request");
-            $.get(handle.config.muzi_root+'ajax/track/log.php',{id:data.id});
-          }).error( function(){This.to403(s,e) });
-        })
+
+        QP.removeTooltip($(this),top);
+
       });
     };
 
