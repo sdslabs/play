@@ -26,7 +26,7 @@ exports.checkIp = function(req, res, next ){
   if(valid == true){
     next();
   } else {
-    res.status(403).send();
+    res.send(403,'Only lab members from lab can play songs');
   }
 }
 
