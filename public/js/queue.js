@@ -53,12 +53,12 @@
     QP.killHandler = function(){
       var This = this;
       $('.stop').click(function(){
-        $.get("/kill").error( function(){This.to403(s,e) });;
+        $.get("/kill").error( This.to403(s,e) );;
         $('#nowplaying').remove();
         //rerender page
         $.post("/next",{},function(data){
           This.renderPage(data);
-          }).error( function(){This.to403(s,e) });;
+          }).error( This.to403(s,e) );;
         This.getQueue();
         This.getRecent();
       });
@@ -233,7 +233,7 @@
                 $(".entry1").addClass("hint--left hint--bounce");
                 QP.showTooltip($(".entry1"), datavalue, "left");
             }
-          }).error( function(){This.to403(s,e) });
+          }).error( This.to403(s,e) );
           QP.removeTooltip($(".entry"),"left");
         });
 
@@ -326,7 +326,7 @@
         $.post('/play',{url:this.config.music_root+url,id:data.id},function(){
           //console.log("Sent a play request");
           $.get(handle.config.muzi_root+'ajax/track/log.php',{id:data.id});
-        }).error( function(){This.to403(s,e) });
+        }).error( This.to403(s,e) );
       })
 
       $.get("/now", function(result){

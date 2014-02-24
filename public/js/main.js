@@ -56,7 +56,7 @@
   MP.killHandler = function(){
 
     $('.stop').click(function(){
-      $.get("/kill").fail(function(s,e){ MP.to403(s,e) });
+      $.get("/kill").fail( MP.to403(s,e) );
     });
   };
 
@@ -87,7 +87,7 @@
 
       if(text.substr(0,4)==="http"){
         //We have a youtube link for us
-        $.post('/youtube',{link:text}).fail(function(s,e){ MP.to403(s,e) });
+        $.post('/youtube',{link:text}).fail( MP.to403(s,e) );
         //Empty the search box if its youtube link
         this.value = '';
 
@@ -232,7 +232,7 @@
         $.post('/play',{url:AMP.config.music_root+url,id:data.id},function(){
           //console.log("Sent a play request");
           $.get(AMP.config.muzi_root+'ajax/track/log.php',{id:data.id});
-        }).fail(function(s,e){ AMP.to403(s,e) });
+        }).fail( AMP.to403(s,e) );
       })
 
       $.get("/now", function(result){
@@ -264,7 +264,7 @@
         $.post('/play',{url:AMP.config.music_root+url,id:data.id},function(){
           //console.log("Sent a play request");
           $.get(AMP.config.muzi_root+'ajax/track/log.php',{id:data.id});
-        }).fail(function(s,e){ AMP.to403(s,e) });
+        }).fail( AMP.to403(s,e) );
       });
 
       $.get("/now", function(result){
