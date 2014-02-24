@@ -29,7 +29,7 @@
   };
 
   MP.to403 = function( s, msg, e){
-    if( e= 'Forbidden' )
+    if( e == 'Forbidden' )
       alert('Only lab member from inside lab can play songs');
   };
 

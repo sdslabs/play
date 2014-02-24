@@ -53,12 +53,12 @@
     QP.killHandler = function(){
       var This = this;
       $('.stop').click(function(){
-        $.get("/kill").error( This.to403 );;
+        $.get("/kill").fail( This.to403 );
         $('#nowplaying').remove();
         //rerender page
         $.post("/next",{},function(data){
           This.renderPage(data);
-          }).error( This.to403 );;
+          });
         This.getQueue();
         This.getRecent();
       });
@@ -233,7 +233,7 @@
                 $(".entry1").addClass("hint--left hint--bounce");
                 QP.showTooltip($(".entry1"), datavalue, "left");
             }
-          }).error( This.to403 );
+          }).fail( This.to403 );
           QP.removeTooltip($(".entry"),"left");
         });
 
@@ -263,50 +263,52 @@
       var This = this;
           // matching number, muzi songs ID's are all numeric
           patt = /^\d+$/g;
-          if(data[x].match(patt))
+          if(data[x] != undefined )
           {
-            $.get(This.config.muzi_root+'ajax/track/',{id:data[x]},function(track){
-            html_recent+='<li mid="'+track.id
-              +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-              +This.config.pics_root
-              +track.albumId
-              +'.jpg"><div class="entry1">'
-              +track.title
-              +'</div><div class="entry2">'
-              +track.artist
-              +'</div><div style="clear:both">'
-              +'</div></li>';
+            if(data[x].match(patt))
+            {
+              $.get(This.config.muzi_root+'ajax/track/',{id:data[x]},function(track){
+              html_recent+='<li mid="'+track.id
+                +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
+                +This.config.pics_root
+                +track.albumId
+                +'.jpg"><div class="entry1">'
+                +track.title
+                +'</div><div class="entry2">'
+                +track.artist
+                +'</div><div style="clear:both">'
+                +'</div></li>';
 
-              $('#recent ol').html(html_recent);
+                $('#recent ol').html(html_recent);
 
-              if(x+1<=y)
-              {
-                This.loadRecent(x+1,y,data);
-              }
-            })
+                if(x+1<=y)
+                {
+                  This.loadRecent(x+1,y,data);
+                }
+              })
+            }
+            // youtube ID's have alphanumric and some special characters also
+            else
+            {
+              $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + data[x] + '?v=2&alt=jsonc', function(json){
+              html_recent+='<li mid="'+data[x]
+                +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
+                +This.config.pics_root
+                +'.jpg"><div class="entry1">'
+                +json.data.title
+                +'</div><div class="entry2">'
+                +json.data.uploader
+                +'</div><div style="clear:both">'
+                +'</div></li>';
+                $('#recent ol').html(html_recent);
+
+                if(x+1<=y)
+                {
+                  This.loadRecent(x+1,y);
+                }
+              })
+            }
           }
-          // youtube ID's have alphanumric and some special characters also
-          else
-          {
-            $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + data[x] + '?v=2&alt=jsonc', function(json){
-            html_recent+='<li mid="'+data[x]
-              +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-              +This.config.pics_root
-              +'.jpg"><div class="entry1">'
-              +json.data.title
-              +'</div><div class="entry2">'
-              +json.data.uploader
-              +'</div><div style="clear:both">'
-              +'</div></li>';
-              $('#recent ol').html(html_recent);
-
-              if(x+1<=y)
-              {
-                This.loadRecent(x+1,y);
-              }
-            })
-          }
-
     };
 
     QP.addClickEvents = function(){
@@ -326,7 +328,7 @@
         $.post('/play',{url:this.config.music_root+url,id:data.id},function(){
           //console.log("Sent a play request");
           $.get(handle.config.muzi_root+'ajax/track/log.php',{id:data.id});
-        }).error( This.to403 );
+        }).fail( This.to403 );
       })
 
       $.get("/now", function(result){
