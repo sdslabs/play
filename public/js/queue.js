@@ -234,7 +234,7 @@
                 QP.showTooltip($(".entry1"), datavalue, "left");
             }
           }).fail( This.to403 );
-          QP.removeTooltip($(".entry"),"left");
+          QP.removeTooltip($(".entry1"),"left");
         });
 
       }
