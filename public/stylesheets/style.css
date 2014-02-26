@@ -88,3 +88,10 @@ h1 a:hover {
   right: -5px;
   cursor: pointer;
 }
+
+.stop {
+  padding-left: 6px;
+}
+a:hover {
+  text-decoration: none;
+}
