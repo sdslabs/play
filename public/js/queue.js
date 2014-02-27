@@ -20,7 +20,7 @@
     };
 
     QP.showTooltip = function(obj, value, pos){
-    obj.attr("data-hint",""+datavalue+"");
+    obj.attr("data-hint",""+value+"");
     obj.addClass("hint--"+top+" hint--bounce");
     };
 
