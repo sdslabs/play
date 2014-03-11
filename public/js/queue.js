@@ -317,19 +317,25 @@
       $('.data').delegate('#recent ol li','click',function(e){
         //console.log('We clicked on a song from recent list');
         var trackId=this.getAttribute('mid');
+        var patt = /^\d+$/g;
         // notification on adding a song
         // checking that, is there a song playing right now or not
         datavalue = "";
         This = $(this);
+        if(trackId.match(patt)){
 
-
-      $.get(handle.config.muzi_root+"ajax/track/",{id:trackId},function(data){
-        var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
-        $.post('/play',{url:this.config.music_root+url,id:data.id},function(){
-          //console.log("Sent a play request");
-          $.get(handle.config.muzi_root+'ajax/track/log.php',{id:data.id});
-        }).fail( This.to403 );
-      })
+            $.get(handle.config.muzi_root+"ajax/track/",{id:trackId},function(data){
+              var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
+              $.post('/play',{url:this.config.music_root+url,id:data.id},function(){
+                //console.log("Sent a play request");
+                $.get(handle.config.muzi_root+'ajax/track/log.php',{id:data.id});
+              }).fail( This.to403 );
+            })
+        }
+        else {
+          var link = 'https://www.youtube.com/watch?v='+trackId;
+          $.post('/youtube',{link:link}).fail( This.to403 );
+        }
 
       $.get("/now", function(result){
         if(result)
