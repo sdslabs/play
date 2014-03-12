@@ -326,7 +326,7 @@
 
             $.get(handle.config.muzi_root+"ajax/track/",{id:trackId},function(data){
               var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
-              $.post('/play',{url:this.config.music_root+url,id:data.id},function(){
+              $.post('/play',{url:handle.config.music_root+url,id:data.id},function(){
                 //console.log("Sent a play request");
                 $.get(handle.config.muzi_root+'ajax/track/log.php',{id:data.id});
               }).fail( This.to403 );
