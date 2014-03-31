@@ -18,10 +18,7 @@ exports.youtube=function(req,res){
 };
 
 exports.checkIp = function(req, res, next ){
-  var ip = req.headers['x-forwarded-for'] ||
-     req.connection.remoteAddress ||
-     req.socket.remoteAddress ||
-     req.connection.socket.remoteAddress;
+  var ip = req.ip;
   var valid = ipClass.testIP(ip);
   if(valid == true){
     next();
