@@ -95,3 +95,47 @@ h1 a:hover {
 a:hover {
   text-decoration: none;
 }
+
+.playlists{
+  list-style-type:none;
+}
+
+.playlist_tracks{
+  list-style-type:none;
+}
+
+.playlists li{
+  float: left;
+  height: 10%;
+  width: 16%;
+  padding: 3% 0%;
+  cursor: pointer;
+}
+.playlist-head{
+  margin-left: 30px;
+}
+.playlist_tracks li{
+  float: left;
+  height: 100px !important;
+  width: 20% !important;
+  padding: 3% 0%;
+  cursor: pointer;
+}
+.playlist_tracks li div{
+  width: 100%;
+  float: left;
+}
+
+.playlist_tracks li .track-details{
+  display: block;
+}
+.playlist_tracks li .track-details span{
+  width: 100%;
+  height: 15px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: :hidden;
+}
+.playlists .playlist-name{
+  font-size: 17px;
+}
