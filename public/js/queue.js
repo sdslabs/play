@@ -14,9 +14,9 @@
         return false;
     };
 
-    QP.to403 = function( s,e ){
-      if( e = 403 )
-      alert(s);
+    QP.to403 = function( s, msg, e ){
+      if( e == 'Forbidden' )
+        alert('Only lab member from inside lab can play songs');
     };
 
     QP.showTooltip = function(obj, value, pos){
