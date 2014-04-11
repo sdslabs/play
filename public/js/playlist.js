@@ -68,7 +68,7 @@
 	        var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
 	        $.post('/play',{url:This.config.music_root+url,id:data.id},function(){
 	          $.get(This.config.muzi_root+'ajax/track/log.php',{id:data.id});
-	        }).fail( This.to403 );
+	        }).fail( MP.to403 );
 	      })
 	      var liHandle = $(this);
 
