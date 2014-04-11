@@ -5,7 +5,7 @@
 
 	var PP = Playlist.prototype;
 
-	var AMP = play.main;
+	var MP = play.main;
 
 	PP.setup = function(){
 		var This = this;
@@ -61,35 +61,31 @@
 			This.getSpecificPlaylist($(this).attr('data-id'));
 		});
 		$('.data').delegate('.playlist_tracks li','click',function(e){
-      //console.log('We clicked on a song from top list');
 	      var trackId=this.getAttribute('mid');
-	      // notification on adding a song
-	      // checking that, is there a song playing right now or not
 	      datavalue = "";
-	      This = $(this);
 
-	      $.get(AMP.config.muzi_root+"ajax/track/",{id:trackId},function(data){
+	      $.get(This.config.muzi_root+"ajax/track/",{id:trackId},function(data){
 	        var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
-	        $.post('/play',{url:AMP.config.music_root+url,id:data.id},function(){
-	          //console.log("Sent a play request");
-	          $.get(AMP.config.muzi_root+'ajax/track/log.php',{id:data.id});
-	        }).fail( AMP.to403 );
+	        $.post('/play',{url:This.config.music_root+url,id:data.id},function(){
+	          $.get(This.config.muzi_root+'ajax/track/log.php',{id:data.id});
+	        }).fail( This.to403 );
 	      })
+	      var liHandle = $(this);
 
 	      $.get("/now", function(result){
 	        if(result)
 	        {
 	          datavalue = "Added song to queue";
-	          AMP.showTooltip(This, datavalue, "left");
+	          MP.showTooltip(liHandle, datavalue, "left");
 	        }
 	        else
 	        {
 	          datavalue = "Playing it right now";
-	          AMP.showTooltip(This, datavalue, "left");
+	          MP.showTooltip(liHandle, datavalue, "left");
 	        }
 	      });
 
-	      AMP.removeTooltip($(this),"top");
+	      MP.removeTooltip($(this),"");
 	    });
 
 	}

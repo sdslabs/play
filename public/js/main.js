@@ -35,7 +35,7 @@
 
   MP.showTooltip = function(obj, value, pos){
     obj.attr("data-hint",""+value+"");
-    obj.addClass("hint--"+top+" hint--bounce");
+    obj.addClass("hint--"+pos+" hint--bounce");
   };
 
   MP.removeTooltip = function(obj, pos){
