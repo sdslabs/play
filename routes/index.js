@@ -1,7 +1,7 @@
 exports.index = function(req, res){
   res.render("index");
 };
-var vlc=require("../lib/vlc.js");
+var vlc=require("../lib/mplayer.js");
 var ipClass = require("../lib/iptest.js");
 
 exports.play = function(req,res){
@@ -59,6 +59,12 @@ exports.now = function(req,res){
   if(now==0){res.send(false);}
   else{res.send(true);}
 }
+
+exports.togglepause = function(req, res) {
+  var success = vlc.togglepause();
+  res.send(success);
+}
+
 //exports.pause=function(req,res){
 //  res.send(vlc.pause());
 //}

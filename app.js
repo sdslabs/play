@@ -32,6 +32,7 @@ app.get('/queue',routes.queuelist);
 app.get('/list',routes.list);
 app.get('/recent',routes.recent);
 app.get('/now',routes.now);
+app.get('/togglepause',routes.togglepause);
 app.post('/play', routes.checkIp, routes.play);
 app.post('/repeat', routes.checkIp, routes.repeat);
 app.post('/next', routes.next);
