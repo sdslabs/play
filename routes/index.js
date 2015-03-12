@@ -64,8 +64,30 @@ exports.now = function(req,res){
 }
 
 exports.togglepause = function(req, res) {
-  var success = vlc.togglepause();
-  res.send(success);
+  var isPlaying = vlc.rightnow() == 0 ? false: true;
+  var isPaused = vlc.isPaused();
+  var action = null;
+  var success = false;
+
+  if(isPlaying) {
+
+    if(isPaused) {
+      success = vlc.togglepause();
+
+      if(success) {
+        action = 'resumed';
+      }
+    } else {
+      success = vlc.togglepause();
+
+      if(success) {
+        action = 'paused';
+      }
+
+    }
+  }
+
+  sendJSONResponse(res, {success: success, action: action});
 }
 
 /**
@@ -105,12 +127,7 @@ exports.nowplaying = function(req, res) {
   } else {
     sendJSONResponse(res, {
           playing: isPlaying,
-          track: {
-            id: trackId,
-            title: title,
-            artist: artist_name,
-            artist_pic: artist_pic
-          }
+          track: null
         });
   }
 
