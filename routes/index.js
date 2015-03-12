@@ -91,7 +91,7 @@ exports.nowplaying = function(req, res) {
         artist_name = jsonResponse.artist;
         artist_pic = "https://cdn.sdslabs.co.in/music_pics/" + jsonResponse.album_id + ".jpg";
 
-        sendNowPlayingResponse(res, {
+        sendJSONResponse(res, {
           playing: isPlaying,
           track: {
             id: trackId,
@@ -103,7 +103,7 @@ exports.nowplaying = function(req, res) {
       }
     });
   } else {
-    sendNowPlayingResponse(res, {
+    sendJSONResponse(res, {
           playing: isPlaying,
           track: {
             id: trackId,
@@ -116,7 +116,7 @@ exports.nowplaying = function(req, res) {
 
 }
 
-var sendNowPlayingResponse = function(res, data) {
+var sendJSONResponse = function(res, data) {
   res.setHeader("Content-Type", "application/json");
   res.send(JSON.stringify(data));
 };
