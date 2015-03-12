@@ -1,7 +1,10 @@
 exports.index = function(req, res){
   res.render("index");
 };
-var vlc=require("../lib/mplayer.js");
+
+var request = require('request');
+
+var vlc = require("../lib/mplayer.js");
 var ipClass = require("../lib/iptest.js");
 
 exports.play = function(req,res){
@@ -69,16 +72,54 @@ exports.togglepause = function(req, res) {
  * JSON endpoints
  */
 exports.nowplaying = function(req, res) {
-  var isPlaying = vlc.rightnow() == 0 ? false: true ;
-  var trackId = vlc.getCurrent();
+  var isPlaying = vlc.rightnow() == 0 ? false: true;
+  var trackId = null;
+  var title = null;
+  var artist_name = null;
+  var artist_pic = null;
 
-  res.send(JSON.stringify({
-    playing: isPlaying,
-    track: {
-      id: trackId
-    }
-  }));
+  if(isPlaying) {
+    var trackId = vlc.getCurrent()[0];
+
+    var trackInfoUrl = "https://howl.sdslabs.co.in/track/info/";
+
+    request(trackInfoUrl + trackId, function(error, response, body) {
+      if( ! error && response.statusCode == 200) {
+        var jsonResponse = JSON.parse(body);
+
+        title = jsonResponse.title;
+        artist_name = jsonResponse.artist;
+        artist_pic = "https://cdn.sdslabs.co.in/music_pics/" + jsonResponse.album_id + ".jpg";
+
+        sendNowPlayingResponse(res, {
+          playing: isPlaying,
+          track: {
+            id: trackId,
+            title: title,
+            artist: artist_name,
+            artist_pic: artist_pic
+          }
+        });
+      }
+    });
+  } else {
+    sendNowPlayingResponse(res, {
+          playing: isPlaying,
+          track: {
+            id: trackId,
+            title: title,
+            artist: artist_name,
+            artist_pic: artist_pic
+          }
+        });
+  }
+
 }
+
+var sendNowPlayingResponse = function(res, data) {
+  res.setHeader("Content-Type", "application/json");
+  res.send(JSON.stringify(data));
+};
 
 //exports.pause=function(req,res){
 //  res.send(vlc.pause());

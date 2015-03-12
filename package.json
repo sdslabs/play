@@ -6,6 +6,7 @@
   , "dependencies": {
       "express": "3.4.0",
       "jade" : "1.1.*",
-      "node-mplayer": "0.0.3"
+      "node-mplayer": "0.0.3",
+      "request": "2.*"
   }
 }
