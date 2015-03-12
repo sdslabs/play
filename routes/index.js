@@ -65,6 +65,21 @@ exports.togglepause = function(req, res) {
   res.send(success);
 }
 
+/**
+ * JSON endpoints
+ */
+exports.nowplaying = function(req, res) {
+  var isPlaying = vlc.rightnow() == 0 ? false: true ;
+  var trackId = vlc.getCurrent();
+
+  res.send(JSON.stringify({
+    playing: isPlaying,
+    track: {
+      id: trackId
+    }
+  }));
+}
+
 //exports.pause=function(req,res){
 //  res.send(vlc.pause());
 //}
