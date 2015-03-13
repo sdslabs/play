@@ -165,6 +165,12 @@ exports.nextsong = function(req, res) {
   }
 }
 
+exports.increasevolume = function(req, res) {
+  var vol = vlc.increaseVolume();
+
+  sendJSONResponse(res, {volume: vol});
+}
+
 var sendJSONResponse = function(res, data) {
   res.setHeader("Content-Type", "application/json");
   res.send(JSON.stringify(data));

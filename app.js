@@ -35,6 +35,7 @@ app.get('/now',routes.now);
 app.get('/nowplaying.json',routes.nowplaying);
 app.get('/next.json',routes.nextsong);
 app.get('/togglepause',routes.togglepause);
+app.get('/volume/increase',routes.increasevolume);
 app.post('/play', routes.checkIp, routes.play);
 app.post('/repeat', routes.checkIp, routes.repeat);
 app.post('/next', routes.next);
