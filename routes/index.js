@@ -171,6 +171,12 @@ exports.increasevolume = function(req, res) {
   sendJSONResponse(res, {volume: vol});
 }
 
+exports.decreasevolume = function(req, res) {
+  var vol = vlc.decreaseVolume();
+
+  sendJSONResponse(res, {volume: vol});
+}
+
 var sendJSONResponse = function(res, data) {
   res.setHeader("Content-Type", "application/json");
   res.send(JSON.stringify(data));

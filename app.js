@@ -36,6 +36,7 @@ app.get('/nowplaying.json',routes.nowplaying);
 app.get('/next.json',routes.nextsong);
 app.get('/togglepause',routes.togglepause);
 app.get('/volume/increase',routes.increasevolume);
+app.get('/volume/decrease',routes.decreasevolume);
 app.post('/play', routes.checkIp, routes.play);
 app.post('/repeat', routes.checkIp, routes.repeat);
 app.post('/next', routes.next);
