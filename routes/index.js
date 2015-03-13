@@ -7,6 +7,9 @@ var request = require('request');
 var vlc = require("../lib/mplayer.js");
 var ipClass = require("../lib/iptest.js");
 
+var trackInfoUrl = "https://howl.sdslabs.co.in/track/info/";
+var pics_root = "https://cdn.sdslabs.co.in/music_pics/";
+
 exports.play = function(req,res){
   vlc.play(req.body.url,req.body.id);
   res.send("Playing");
@@ -103,15 +106,13 @@ exports.nowplaying = function(req, res) {
   if(isPlaying) {
     var trackId = vlc.getCurrent()[0];
 
-    var trackInfoUrl = "https://howl.sdslabs.co.in/track/info/";
-
     request(trackInfoUrl + trackId, function(error, response, body) {
       if( ! error && response.statusCode == 200) {
         var jsonResponse = JSON.parse(body);
 
         title = jsonResponse.title;
         artist_name = jsonResponse.artist;
-        artist_pic = "https://cdn.sdslabs.co.in/music_pics/" + jsonResponse.album_id + ".jpg";
+        artist_pic = pics_root + jsonResponse.album_id + ".jpg";
 
         sendJSONResponse(res, {
           playing: isPlaying,
@@ -131,6 +132,37 @@ exports.nowplaying = function(req, res) {
         });
   }
 
+}
+
+exports.nextsong = function(req, res) {
+  var nextSong = vlc.getNext();
+
+  if(null !== nextSong) {
+    var trackId = nextSong[0];
+
+    request(trackInfoUrl + trackId, function(error, response, body) {
+      if( ! error && response.statusCode == 200) {
+        var jsonResponse = JSON.parse(body);
+
+        title = jsonResponse.title;
+        artist_name = jsonResponse.artist;
+        artist_pic = pics_root + jsonResponse.album_id + ".jpg";
+
+        sendJSONResponse(res, {
+          track: {
+            id: trackId,
+            title: title,
+            artist: artist_name,
+            artist_pic: artist_pic
+          }
+        });
+      }
+    });
+  } else {
+    sendJSONResponse(res, {
+          track: null
+        });
+  }
 }
 
 var sendJSONResponse = function(res, data) {
