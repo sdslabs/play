@@ -117,7 +117,7 @@
               html+='<li mid="'+data.tracks[i].id
                 +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
                 +AMP.config.pics_root
-                +data.tracks[i].albumId
+                +data.tracks[i].album_id
                 +'.jpg"><div class="entry1">'
                 +data.tracks[i].title
                 +'</div><div class="entry2">'
@@ -206,7 +206,7 @@
       content = '<li mid="'+data[x].track.id
       +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
       +this.config.pics_root
-      +data[x].track.albumId
+      +data[x].track.album_id
       +'.jpg"><div class="entry1">'
       +data[x].track.title
       +'</div><div class="entry2">'
@@ -288,21 +288,21 @@
       //We clicked on an artist!
 
       var artistId=this.getAttribute('mid');
-      $.get(AMP.config.muzi_root+"/album/related/" + artistId,function(data){
+      $.get(AMP.config.muzi_root+"/band/albums/" + artistId,function(data){
         $('#artists').remove();
         $('#tracks').remove();
         $('#albums').removeClass().addClass('span4 offset4');
         html='';
         for(i in data.albums){
           html+='<li mt="album" mid="'
-          +data.albums[i].id
+          +data[i].id
           +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
           +AMP.config.pics_root
-          +data.albums[i].id
+          +data[i].id
           +'.jpg"><div class="entry1">'
-          +data.albums[i].name
+          +data[i].name
           +'</div><div class="entry2">'
-          +data.albums[i].band
+          +data[i].band
           +'</div><div style="clear: both"></div></li>'
         }
         $('#albums ol').html(html);
@@ -314,7 +314,7 @@
       //console.log('We clicked on an album!');
 
       var albumId=this.getAttribute('mid');
-      $.get(AMP.config.muzi_root+"ajax/album/index.php",{id:albumId},function(data){
+      $.get(AMP.config.muzi_root+"album/info/" + albumId,function(data){
         $('#albums').remove();
         $('#artists').remove();
         $('#tracks').remove();

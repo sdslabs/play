@@ -22,10 +22,10 @@
 
 	PP.getPlaylists = function(){
 		var This = this;
-		$.get(This.config.muzi_root + '/ajax/playlist/list.php	').done( function(data){
+		$.getJSON(This.config.muzi_root + 'playlist/list').done( function(data){
 			var html ='<ul class="playlists">';
 			for(i in data){
-				html += '<li data-id="'+ data[i].id +'"><div class="entry1">'+ data[i].name + '</div><div class="entry2"> by ' + data[i].username +'</div></li>';
+				html += '<li data-id="'+ data[i].id +'"><div class="entry1">'+ data[i].name + '</div>';
 			}
 			html += '</ul>';
 			$(".data").html(html);
@@ -34,13 +34,13 @@
 
 	PP.getSpecificPlaylist = function(id){
 		var This = this;
-		$.get(This.config.muzi_root + '/ajax/playlist/index.php', {id:id}).done(function(data){
+		$.get(This.config.muzi_root + 'playlist/info/' + id).done(function(data){
 			var html = '<div class="playlist-head"><div class="entry1">'+data.name + '</div><div class="entry2">by ' + data.username + '</div></div>' + '<ul class="playlist_tracks">';
 			for(i in data.tracks){
 				html += '<li mid="' + data.tracks[i].id;
                 html +='"><div><img style="float:left" class="thumbnail" width="50" height="50" src="';
                 html +=  This.config.pics_root;
-                html += data.tracks[i].albumId;
+                html += data.tracks[i].album_id;
                 html += '.jpg"></div><div class="track-details"<span class="entry1">';
                 html += data.tracks[i].title;
                 html += '</span><span class="entry2">';
@@ -64,10 +64,10 @@
 	      var trackId=this.getAttribute('mid');
 	      datavalue = "";
 
-	      $.get(This.config.muzi_root+"ajax/track/",{id:trackId},function(data){
+	      $.get(This.config.muzi_root+"track/info/" + trackId,function(data){
 	        var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
 	        $.post('/play',{url:This.config.music_root+url,id:data.id},function(){
-	          $.get(This.config.muzi_root+'ajax/track/log.php',{id:data.id});
+	          $.post(This.config.muzi_root+'track/log',{id:data.id});
 	        }).fail( MP.to403 );
 	      })
 	      var liHandle = $(this);

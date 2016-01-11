@@ -4,7 +4,7 @@ $.getJSON('/config.json',function(config){
       if(data){
         $.get(config.muzi_root+'ajax/track/',{id:data},function(track){
           console.log(track);
-          $('#albumart').attr('src',config.pics_root+track.albumId+'.jpg');
+          $('#albumart').attr('src',config.pics_root+track.album_id+'.jpg');
           $("#tracktitle").text(track.title);
           $("#trackalbum").text(track.albumName);
           $("#trackartist").text(track.artist);

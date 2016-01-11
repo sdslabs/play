@@ -123,12 +123,12 @@
           }
           // muzi link
           else{
-          $.get(This.config.muzi_root + 'ajax/track/', {id:data[x][1]}, function(track){
+          $.getJSON(This.config.muzi_root + 'track/info/' + data[x][1], function(track){
 
               html+='<li mid="'+track.id
                 +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
                 +This.config.pics_root
-                +track.albumId
+                +track.album_id
                 +'.jpg"><div class="entry1">'
                 +track.title
                 +'</div><div class="entry2">'
@@ -167,7 +167,7 @@
         patt = /^\d+$/g;
         if(data[0].match(patt))
         {
-          $.get(This.config.muzi_root+'ajax/track/',{id:data[0]},function(track){
+          $.getJSON(This.config.muzi_root+'track/info/' + data[0],function(track){
 
             if(track.lyrics == 'NOT_FOUND' || track.lyrics == null ) {
               track.lyrics = null;
@@ -175,7 +175,7 @@
           htmlnew+='<div mid="'+track.id
             +'"><img src="'
             +This.config.pics_root
-            +track.albumId
+            +track.album_id
             +'.jpg">'
             +'<div class="entry1">'
             +track.title
@@ -267,13 +267,13 @@
           {
             if(data[x].match(patt))
             {
-              $.get(This.config.muzi_root+'ajax/track/',{id:data[x]},function(track){
+              $.get(This.config.muzi_root+'track/info/' + data[x],function(track){
               html_recent+='<li mid="'+track.id
                 +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
                 +This.config.pics_root
-                +track.albumId
+                +track.album_id
                 +'.jpg"><div class="entry1">'
-                +track.title
+                +track.track.title
                 +'</div><div class="entry2">'
                 +track.artist
                 +'</div><div style="clear:both">'
@@ -324,11 +324,11 @@
         This = $(this);
         if(trackId.match(patt)){
 
-            $.get(handle.config.muzi_root+"ajax/track/",{id:trackId},function(data){
+            $.get(handle.config.muzi_root+"track/info/" + trackId,function(data){
               var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
               $.post('/play',{url:handle.config.music_root+url,id:data.id},function(){
                 //console.log("Sent a play request");
-                $.get(handle.config.muzi_root+'ajax/track/log.php',{id:data.id});
+                $.post(handle.config.muzi_root+'track/log',{id:data.id});
               }).fail( This.to403 );
             })
         }
