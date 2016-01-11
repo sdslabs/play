@@ -93,7 +93,7 @@
 
       }
       else {
-        $.get(AMP.config.muzi_root+"ajax/search/",{search:text},function(data){
+        $.get(AMP.config.muzi_root+"search/all/" + text,function(data){
           // removing old data to show new
           $('#alert').remove();
           $('#artists').remove();
@@ -129,14 +129,14 @@
             $('#tracks ol').html(html);
 
             html='';
-            for(i in data.artists){
+            for(i in data.bands){
               html+='<li mt="artist" mid="'
-              +data.artists[i].id+
+              +data.bands[i].id+
               '"><img style="float:left" class="thumbnail" width="50" height="50" src="'
               +AMP.config.pics_root
-              +data.artists[i].id
+              +data.bands[i].id
               +'.jpg"><div class="entry1">'
-              +data.artists[i].name
+              +data.bands[i].name
               +'</div><div style="clear:both"></div></li>'
             }
             $('#artists ol').html(html);
@@ -259,11 +259,11 @@
       datavalue = "";
       This = $(this);
 
-      $.get(AMP.config.muzi_root+"track/" + trackId,function(data){
+      $.getJSON(AMP.config.muzi_root+"track/info/" + trackId,function(data){
         var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
         $.post('/play',{url:AMP.config.music_root+url,id:data.id},function(){
           //console.log("Sent a play request");
-          $.get(AMP.config.muzi_root+'track/log',{id:data.id});
+          $.post(AMP.config.muzi_root+'track/log',{id:data.id});
         }).fail( AMP.to403 );
       });
 
@@ -288,12 +288,12 @@
       //We clicked on an artist!
 
       var artistId=this.getAttribute('mid');
-      $.get(AMP.config.muzi_root+"/band/albums/" + artistId,function(data){
+      $.getJSON(AMP.config.muzi_root+"/band/albums/" + artistId,function(data){
         $('#artists').remove();
         $('#tracks').remove();
         $('#albums').removeClass().addClass('span4 offset4');
         html='';
-        for(i in data.albums){
+        for(i in data){
           html+='<li mt="album" mid="'
           +data[i].id
           +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
@@ -302,7 +302,7 @@
           +'.jpg"><div class="entry1">'
           +data[i].name
           +'</div><div class="entry2">'
-          +data[i].band
+          +data[i].band_name
           +'</div><div style="clear: both"></div></li>'
         }
         $('#albums ol').html(html);
@@ -314,7 +314,7 @@
       //console.log('We clicked on an album!');
 
       var albumId=this.getAttribute('mid');
-      $.get(AMP.config.muzi_root+"album/info/" + albumId,function(data){
+      $.getJSON(AMP.config.muzi_root+"album/info/" + albumId,function(data){
         $('#albums').remove();
         $('#artists').remove();
         $('#tracks').remove();
