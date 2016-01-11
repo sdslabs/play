@@ -267,13 +267,13 @@
           {
             if(data[x].match(patt))
             {
-              $.get(This.config.muzi_root+'track/info/' + data[x],function(track){
+              $.getJSON(This.config.muzi_root+'track/info/' + data[x],function(track){
               html_recent+='<li mid="'+track.id
                 +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
                 +This.config.pics_root
                 +track.album_id
                 +'.jpg"><div class="entry1">'
-                +track.track.title
+                +track.title
                 +'</div><div class="entry2">'
                 +track.artist
                 +'</div><div style="clear:both">'
@@ -324,7 +324,7 @@
         This = $(this);
         if(trackId.match(patt)){
 
-            $.get(handle.config.muzi_root+"track/info/" + trackId,function(data){
+            $.getJSON(handle.config.muzi_root+"track/info/" + trackId,function(data){
               var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
               $.post('/play',{url:handle.config.music_root+url,id:data.id},function(){
                 //console.log("Sent a play request");

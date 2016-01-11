@@ -99,6 +99,7 @@
           $('#artists').remove();
           $('#tracks').remove();
           $('#albums').remove();
+          $('#playlists').remove();
             var dataHandle = $('.data');
             // showing no 'result' alert thing
             if((data.tracks.length==0) && (data.albums.length==0) && (data.artists.length==0))
