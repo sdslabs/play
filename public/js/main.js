@@ -167,7 +167,7 @@
   MP.setTop20 = function(){
     // console.log(this.config);
     //showing top songs from muzi leaderboard
-    $.get(AMP.config.muzi_root+"ajax/track/top.php", function(data){
+    $.get(AMP.config.muzi_root+"track/top/week", function(data){
 
       AMP.dataArray = data;
 
@@ -191,26 +191,26 @@
 
   MP.html = function(x){
     var data = this.dataArray;
-    if(data[x].title.length > 28)
+    if(data[x].track.title.length > 28)
       {
-        tempt = data[x].title.substring(0,26);
-        data[x].title = tempt + '...';
+        tempt = data[x].track.title.substring(0,26);
+        data[x].track.title = tempt + '...';
       }
       // substring of artist, if it is lengthy
-      if(data[x].artist.length > 30)
+      if(data[x].track.artist.length > 30)
       {
-        tempa = data[x].artist.substring(0,28);
-        data[x].artist = tempa + '...';
+        tempa = data[x].track.artist.substring(0,28);
+        data[x].track.artist = tempa + '...';
       }
 
-      content = '<li mid="'+data[x].id
+      content = '<li mid="'+data[x].track.id
       +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
       +this.config.pics_root
-      +data[x].albumId
+      +data[x].track.albumId
       +'.jpg"><div class="entry1">'
-      +data[x].title
+      +data[x].track.title
       +'</div><div class="entry2">'
-      +data[x].artist
+      +data[x].track.artist
       +'</div><div style="clear:both">'
       +'</div></li>'
 
@@ -227,11 +227,11 @@
       datavalue = "";
       This = $(this);
 
-      $.get(AMP.config.muzi_root+"ajax/track/",{id:trackId},function(data){
+      $.getJSON(AMP.config.muzi_root+"track/info/" + trackId,function(data){
         var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
         $.post('/play',{url:AMP.config.music_root+url,id:data.id},function(){
           //console.log("Sent a play request");
-          $.get(AMP.config.muzi_root+'ajax/track/log.php',{id:data.id});
+          $.post(AMP.config.muzi_root+'track/log',{id:data.id});
         }).fail( AMP.to403 );
       })
 
@@ -259,11 +259,11 @@
       datavalue = "";
       This = $(this);
 
-      $.get(AMP.config.muzi_root+"ajax/track/",{id:trackId},function(data){
+      $.get(AMP.config.muzi_root+"track/" + trackId,function(data){
         var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
         $.post('/play',{url:AMP.config.music_root+url,id:data.id},function(){
           //console.log("Sent a play request");
-          $.get(AMP.config.muzi_root+'ajax/track/log.php',{id:data.id});
+          $.get(AMP.config.muzi_root+'track/log',{id:data.id});
         }).fail( AMP.to403 );
       });
 
@@ -288,7 +288,7 @@
       //We clicked on an artist!
 
       var artistId=this.getAttribute('mid');
-      $.get(AMP.config.muzi_root+"ajax/band/albums.php",{id:artistId},function(data){
+      $.get(AMP.config.muzi_root+"/album/related/" + artistId,function(data){
         $('#artists').remove();
         $('#tracks').remove();
         $('#albums').removeClass().addClass('span4 offset4');
