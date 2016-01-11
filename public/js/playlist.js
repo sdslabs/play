@@ -23,7 +23,7 @@
 	PP.getPlaylists = function(){
 		var This = this;
 		$.getJSON(This.config.muzi_root + 'playlist/list').done( function(data){
-			var html ='<ul class="playlists">';
+			var html ='<ul id="playlists">';
 			for(i in data){
 				html += '<li data-id="'+ data[i].id +'"><div class="entry1">'+ data[i].name + '</div>';
 			}
@@ -57,14 +57,14 @@
 		$(".playlist-anchor").click(function(){
 			This.getPlaylists();
 		});
-		$(".data").delegate(".playlists li", 'click', function(){
+		$(".data").delegate("#playlists li", 'click', function(){
 			This.getSpecificPlaylist($(this).attr('data-id'));
 		});
 		$('.data').delegate('.playlist_tracks li','click',function(e){
 	      var trackId=this.getAttribute('mid');
 	      datavalue = "";
 
-	      $.get(This.config.muzi_root+"track/info/" + trackId,function(data){
+	      $.getJSON(This.config.muzi_root+"track/info/" + trackId,function(data){
 	        var url=data.file.split('/').map(function(x){return encodeURIComponent(x);}).join('/');
 	        $.post('/play',{url:This.config.music_root+url,id:data.id},function(){
 	          $.post(This.config.muzi_root+'track/log',{id:data.id});
