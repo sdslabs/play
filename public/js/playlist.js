@@ -34,7 +34,7 @@
 
 	PP.getSpecificPlaylist = function(id){
 		var This = this;
-		$.get(This.config.muzi_root + 'playlist/info/' + id).done(function(data){
+		$.getJSON(This.config.muzi_root + 'playlist/info/' + id).done(function(data){
 			var html = '<div class="playlist-head"><div class="entry1">'+data.name + '</div><div class="entry2">by ' + data.username + '</div></div>' + '<ul class="playlist_tracks">';
 			for(i in data.tracks){
 				html += '<li mid="' + data.tracks[i].id;
