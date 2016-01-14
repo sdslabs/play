@@ -93,7 +93,7 @@
 
       }
       else {
-        $.get(AMP.config.muzi_root+"search/all/" + text,function(data){
+        $.getJSON(AMP.config.muzi_root+"search/all/" + text,function(data){
           // removing old data to show new
           $('#alert').remove();
           $('#artists').remove();
