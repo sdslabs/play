@@ -14,8 +14,18 @@ exports.current = function(req,res){
 
 exports.youtube=function(req,res){
   var link=req.body.link;
-  vlc.play(link,'youtube');
+  console.log(link);
+  var callback = function(data) {
+    res.send(200,data);
+  };
+  
+  vlc.play(link,'youtube', callback);
 };
+
+exports.youtubeInfo = function(req, res){
+  var id = req.params.yid;
+  res.send(vlc.getYoutubeInfo(id));
+}
 
 exports.checkIp = function(req, res, next ){
   var ip = req.ip;

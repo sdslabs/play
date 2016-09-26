@@ -3,6 +3,7 @@
 
     function Queue(){
       this.config = null;
+      holi=this;
     };
 
     var QP = Queue.prototype;
@@ -41,6 +42,12 @@
       }
     };
 
+    QP.getYoutubeInfo = function(id, callback){
+      // console.log("here");
+      // console.log(id);
+      $.getJSON(this.config.play_root + 'youtube-info/' + id, callback);
+    }
+
     QP.setup = function(){
       var This = this;
       return $.getJSON('/config.json').done(
@@ -53,14 +60,9 @@
     QP.killHandler = function(){
       var This = this;
       $('.stop').click(function(){
-        $.get("/kill").fail( This.to403 );
-        $('#nowplaying').remove();
-        //rerender page
-        $.post("/next",{},function(data){
-          This.renderPage(data);
-          });
-        This.getQueue();
-        This.getRecent();
+        $.get("/kill", function() {
+          location.reload();
+        }).fail( This.to403 );
       });
     };
 
@@ -81,7 +83,7 @@
     };
     QP.loadQueue = function (x,y,data){
       var This = this;
-
+        console.log(">><<" +x+y+data);
           // youtube link (of any kind : multiple query parameters also)
 
            if(data[x][1] == 'youtube')
@@ -101,13 +103,12 @@
               for(var i=a+3;i<a+14;i++)
               {id = id + url[i];}
             }
-
-            // got this from hell
-            $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + id + '?v=2&alt=jsonc', function(json){
+            // got this from hell, yeah really
+            This.getYoutubeInfo(id, function(json){
               html+='<li mid="'+ id
                 +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-                +This.config.pics_root
-                +'.jpg"><div class="entry1">'
+                +json.data.thumbnail
+                +'"><div class="entry1">'
                 +json.data.title
                 +'</div><div class="entry2">'
                 +json.data.uploader
@@ -119,7 +120,7 @@
               {
                 This.loadQueue(x+1,y,data);
               }
-            })
+            });
           }
           // muzi link
           else{
@@ -141,7 +142,7 @@
               {
                 This.loadQueue(x+1,y,data);
               }
-            })
+              })
           }
     };
 
@@ -207,11 +208,11 @@
         // youtube ID's have alphanumric and some special characters also
         else
         {
-          $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + data[0] + '?v=2&alt=jsonc', function(json){
+          This.getYoutubeInfo(data[0], function(json){
           htmlnew+='<div mid="'+data[0]
             +'"><img src="'
-            +This.config.pics_root
-            +'.jpg"><div class="entry1">'
+            +json.data.thumbnail
+            +'"><div class="entry1">'
             +json.data.title
             +'<img src="../repeat.png" id="repeatButton" alt="Repeat" title="Repeat this song"/>'
             +'</div><div class="entry2">'
@@ -219,7 +220,7 @@
             +'</div><div style="clear:both">'
             +'</div></div>';
           $('#nowplaying .combo').html(htmlnew);
-          })
+          });
         }
 
         $('.data').delegate('#repeatButton','click',function(){
@@ -290,11 +291,11 @@
             // youtube ID's have alphanumric and some special characters also
             else
             {
-              $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + data[x] + '?v=2&alt=jsonc', function(json){
+              This.getYoutubeInfo(data[x], function(json){
               html_recent+='<li mid="'+data[x]
                 +'"><img style="float:left" class="thumbnail" width="50" height="50" src="'
-                +This.config.pics_root
-                +'.jpg"><div class="entry1">'
+                +json.data.thumbnail
+                +'"><div class="entry1">'
                 +json.data.title
                 +'</div><div class="entry2">'
                 +json.data.uploader
@@ -306,7 +307,7 @@
                 {
                   This.loadRecent(x+1,y, data);
                 }
-              })
+              });
             }
           }
     };

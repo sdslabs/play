@@ -2,7 +2,7 @@
 
   function Main(){
     this.config = null;
-    this.dataArray = null;
+    this.dataArray = [];
   };
 
   var MP = Main.prototype;
@@ -76,23 +76,24 @@
     //Bind the enter key to the handler
     if(e.keyCode===13){
 
-      //Remove only if enter key has been smashed!
-      $('#_1').remove();
-      $('#_2').remove();
-      $('#_3').remove();
-      $('#_4').remove();
-      $('.hr').remove();
-
       var text=this.value;
 
       if(text.substr(0,4)==="http"){
         //We have a youtube link for us
-        $.post('/youtube',{link:text}).fail( MP.to403 );
+        $.post('/youtube',{link:text}, "json").fail( MP.to403 );
         //Empty the search box if its youtube link
         this.value = '';
 
       }
       else {
+
+        //Remove only if enter key has been smashed and the link is not a youtube link!
+        $('#_1').remove();
+        $('#_2').remove();
+        $('#_3').remove();
+        $('#_4').remove();
+        $('.hr').remove();
+
         $.getJSON(AMP.config.muzi_root+"search/all/" + text,function(data){
           // removing old data to show new
           $('#alert').remove();
@@ -192,6 +193,7 @@
 
   MP.html = function(x){
     var data = this.dataArray;
+    if(data.length<(x+1)) return "<p>SORRY</p>";
     if(data[x].track.title.length > 28)
       {
         tempt = data[x].track.title.substring(0,26);
