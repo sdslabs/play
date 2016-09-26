@@ -1,5 +1,6 @@
 {
-  "muzi_root":"https://sdslabs.co.in/muzi/",
-  "pics_root":"https://cdn.sdslabs.co.in/music_pics/",
-  "music_root":"https://music.sdslabs.co.in/"
+  "muzi_root":"https://howl.sdslabs.co.in/",
+  "pics_root":"https://music.sdslabs.co.in/muzi_pics/album_thumbnail/",
+  "music_root":"https://music.sdslabs.co.in/",
+  "play_root": "https://play.sdslabs.co.in/"
 }
