@@ -27,15 +27,15 @@ app.configure(function(){
 app.get('/', routes.index);
 app.get('/current',routes.current);
 //app.get('/pause',routes.pause);
-app.get('/kill', routes.kill);
+app.get('/kill', routes.checkIp, routes.kill);
 app.get('/queue',routes.queuelist);
 app.get('/list',routes.list);
 app.get('/recent',routes.recent);
 app.get('/now',routes.now);
-app.post('/play', routes.play);
-app.post('/repeat', routes.repeat);
+app.post('/play', routes.checkIp, routes.play);
+app.post('/repeat', routes.checkIp, routes.repeat);
 app.post('/next', routes.next);
-app.post('/youtube', routes.youtube);
+app.post('/youtube', routes.checkIp, routes.youtube);
 app.get('/youtube-info/:yid', routes.youtubeInfo);
 
 http.createServer(app).listen(app.get('port'), function(){
