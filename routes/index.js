@@ -69,6 +69,20 @@ exports.now = function(req,res){
   if(now==0){res.send(false);}
   else{res.send(true);}
 }
+
+exports.volume = function(req, res) {
+  var type = req.params.type;
+  if(type == 'up') {
+    vlc.volume('+3000');
+  }
+  else if(type == 'down') {
+    vlc.volume('-3000');
+  }
+  else if(type == 'mute') {
+    vlc.volume('0');
+  }
+  res.send('ok');
+}
 //exports.pause=function(req,res){
 //  res.send(vlc.pause());
 //}
