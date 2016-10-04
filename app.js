@@ -37,6 +37,7 @@ app.post('/repeat', routes.checkIp, routes.repeat);
 app.post('/next', routes.next);
 app.post('/youtube', routes.checkIp, routes.youtube);
 app.get('/youtube-info/:yid', routes.youtubeInfo);
+app.get('/control', routes.checkIp, routes.control);
 app.get('/volume/:type', routes.checkIp, routes.volume);
 
 http.createServer(app).listen(app.get('port'), function(){

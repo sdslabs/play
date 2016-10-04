@@ -50,6 +50,10 @@ exports.queuelist=function(req,res){
   res.render("queue");
 };
 
+exports.control=function(req,res){
+  res.render("control");
+};
+
 exports.list=function(req,res){
   var list = vlc.queuelist();
   res.send(list);
