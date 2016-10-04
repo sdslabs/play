@@ -9,7 +9,7 @@
     var CP = Volume.prototype;
 
     CP.checkLocation = function(){
-      if(window.location.pathname == "/volume")
+      if(window.location.pathname == "/control")
         return true;
       else
         return false;
@@ -35,6 +35,8 @@
     CP.initialize = function(){
       if(this.checkLocation()){
         this.muteVolume();
+        this.volumeUp();
+        this.volumeDown();
       }
     };
 
