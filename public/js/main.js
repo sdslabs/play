@@ -16,6 +16,7 @@
     if(this.checkPathname()){
       this.focusSearchBar();
       this.killHandler();
+      this.muteVolume();
       this.bindKeydown();
       this.setTop20();
       this.addClickEvents();
@@ -57,6 +58,13 @@
 
     $('.stop').click(function(){
       $.get("/kill").fail( MP.to403 );
+    });
+  };
+
+  MP.muteVolume = function(){
+
+    $('.mute').click(function(){
+      $.get("/volume/mute").fail( MP.to403 );
     });
   };
 
