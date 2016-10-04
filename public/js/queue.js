@@ -35,7 +35,6 @@
     QP.initialize = function(){
       if(this.checkLocation()){
         this.killHandler();
-        this.muteVolume();
         this.getNowPlaying();
         this.getQueue();
         this.getRecent();
@@ -64,13 +63,6 @@
         $.get("/kill", function() {
           location.reload();
         }).fail( This.to403 );
-      });
-    };
-
-    QP.muteVolume = function(){
-      var This = this;
-      $('.mute').click(function(){
-        $.get("/volume/mute").fail( This.to403 );
       });
     };
 
