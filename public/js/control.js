@@ -21,13 +21,13 @@
     };
 
     CP.showTooltip = function(obj, value, pos){
-    obj.attr("data-hint",""+value+"");
-    obj.addClass("hint--"+top+" hint--bounce");
+    obj.attr("data-hint", "" + value + "");
+    obj.addClass("hint--" + top + " hint--bounce");
     };
 
     CP.removeTooltip = function(obj, pos){
       obj.mouseleave(function(){
-          obj.removeClass("hint--"+pos);
+          obj.removeClass("hint--" + pos);
           obj.removeAttr("data-hint");
         });
     };
