@@ -1,5 +1,5 @@
-exports.INCREASE_VOLUME_MAG = "+10";
-exports.DECREASE_VOLUME_MAG = "-10";
+const INCREASE_VOLUME_MAG = "+10";
+const DECREASE_VOLUME_MAG = "-10";
 
 exports.index = function(req, res){
   res.render("index");
