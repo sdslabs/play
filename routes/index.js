@@ -16,7 +16,7 @@ exports.youtube=function(req,res){
   var link=req.body.link;
   console.log(link);
   var callback = function(data) {
-    res.send(200,data);
+    console.log(res.send(200,data));
   };
   
   vlc.play(link,'youtube', callback);
@@ -77,13 +77,20 @@ exports.now = function(req,res){
 exports.volume = function(req, res) {
   var type = req.params.type;
   if(type == 'up') {
-    vlc.volume('+3000');
+    vlc.volume('+10');
   }
   else if(type == 'down') {
-    vlc.volume('-3000');
+    vlc.volume('-10');
   }
   else if(type == 'mute') {
     vlc.volume('0');
+  }
+  else if(type.substring(0,4) == 'set=') {
+    console.log(type.substring(4,type.length));
+    vlc.volume(type.substring(4,type.length));  
+  }
+  else{
+    console.log("here");
   }
   res.send('ok');
 }
