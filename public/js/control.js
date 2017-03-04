@@ -37,6 +37,7 @@
         this.muteVolume();
         this.volumeUp();
         this.volumeDown();
+        this.volumeScroll();
       }
     };
 
@@ -71,7 +72,14 @@
       });
     };
 
-    
+    CP.volumeScroll=function(){
+      var This=this;
+      $('#vscroll').on("change",function(){
+        var vol = this.value;
+        $.get("/volume/set="+vol).fail(This.to403);
+      });
+    };
+
     play.volume = new Volume();
     play.volume.setup();
 

@@ -1,3 +1,6 @@
+const INCREASE_VOLUME_MAG = "+10";
+const DECREASE_VOLUME_MAG = "-10";
+
 exports.index = function(req, res){
   res.render("index");
 };
@@ -14,11 +17,10 @@ exports.current = function(req,res){
 
 exports.youtube=function(req,res){
   var link=req.body.link;
-  console.log(link);
   var callback = function(data) {
     res.send(200,data);
   };
-  
+
   vlc.play(link,'youtube', callback);
 };
 
@@ -76,17 +78,25 @@ exports.now = function(req,res){
 
 exports.volume = function(req, res) {
   var type = req.params.type;
-  if(type == 'up') {
-    vlc.volume('+3000');
+  if(type === 'up') {
+    vlc.volume(INCREASE_VOLUME_MAG);
   }
-  else if(type == 'down') {
-    vlc.volume('-3000');
+  else if(type === 'down') {
+    vlc.volume(DECREASE_VOLUME_MAG);
   }
-  else if(type == 'mute') {
+  else if(type === 'mute') {
     vlc.volume('0');
+  }
+  else{
+    var option=type.substring(0, 4);
+    if (option === 'set=') {
+      var vol=type.substring(4, type.length);
+      vlc.volume(vol);
+    }
   }
   res.send('ok');
 }
 //exports.pause=function(req,res){
 //  res.send(vlc.pause());
 //}
+
