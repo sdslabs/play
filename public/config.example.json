@@ -3,6 +3,6 @@
   "pics_root":"https://music.sdslabs.co.in/muzi_pics/album_thumbnail/",
   "music_root":"https://music.sdslabs.co.in/",
   "play_root": "https://play.sdslabs.co.in/",
-  "env":"developer" ,//for skipping ip tests
-  "env_OS":"linux"//give windows for using volume commands in windows
+  "env":"developer" ,
+  "env_OS":"linux"
 }
