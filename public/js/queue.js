@@ -35,8 +35,8 @@
     QP.initialize = function(){
       if(this.checkLocation()){
         this.killHandler();
-        this.getNowPlaying();
-        this.getQueue();
+        //this.getNowPlaying();
+        //this.getQueue();
         this.getRecent();
         this.addClickEvents();
       }
@@ -242,22 +242,26 @@
     };
 
     // recent songs
-    QP.getRecent = function(){
-      var This = this;
+    QP.getRecent = async() => {
+      try {
+        await(this.getQueue);
+        await(this.getNowPlaying);
 
+        $.get("/recent", function(data){
+          if(data.length > 0){
+            $('#recent').remove();
+            $('.data').append('<div id="recent" class="span4"><h2>Recent</h2><ol></ol></div>');
 
-      $.get("/recent", function(data){
-        if(data.length > 0){
-          $('#recent').remove();
-          $('.data').append('<div id="recent" class="span4"><h2>Recent</h2><ol></ol></div>');
-
-          html_recent = '';
-
-        //
-        This.loadRecent(0,(data.length - 1),data);
+            html_recent = '';
+            //
+            this.loadRecent(0,(data.length - 1),data);
+          }
+        })
       }
 
-    })
+      catch(err) {
+        console.log(err);
+      }
     };
 
     QP.loadRecent = function(x,y,data){
