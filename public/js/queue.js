@@ -35,16 +35,12 @@
     QP.initialize = function(){
       if(this.checkLocation()){
         this.killHandler();
-        //this.getNowPlaying();
-        //this.getQueue();
         this.getRecent();
         this.addClickEvents();
       }
     };
 
     QP.getYoutubeInfo = function(id, callback){
-      // console.log("here");
-      // console.log(id);
       $.getJSON(this.config.play_root + 'youtube-info/' + id, callback);
     }
 
@@ -67,7 +63,7 @@
     };
 
     //Get Queue Logic
-    QP.getQueue = function(){
+    QP.getQueue = new Promise(function(resolve, reject){
       var This = this;
       $.get("/list",function(data){
       if(data.length > 0){
@@ -75,13 +71,13 @@
       $('.data').append('<div id="tracks" class="span4"><h2>Queue</h2><ol></ol></div>');
       html='';
 
-
       // loading the queue data
       This.loadQueue(0,(data.length - 1), data);
       }
     });
-    };
-    QP.loadQueue = function (x,y,data){
+    });
+
+    QP.loadQueue = function(x,y,data){
       var This = this;
         console.log(">><<" +x+y+data);
           // youtube link (of any kind : multiple query parameters also)
@@ -147,12 +143,12 @@
     };
 
     // now playing data
-    QP.getNowPlaying = function(){
+    QP.getNowPlaying = new Promise(function(resolve, reject){
       var This = this;
       $.get("/current",function(data){
         This.renderPage(data);
       });
-    };
+    })  ;
 
 
     //Logic for page rendering
@@ -244,9 +240,7 @@
     // recent songs
     QP.getRecent = async() => {
       try {
-        await(this.getQueue);
-        await(this.getNowPlaying);
-
+        await Promise.all([this.getQueue(), this.getNowPlaying()]);
         $.get("/recent", function(data){
           if(data.length > 0){
             $('#recent').remove();
